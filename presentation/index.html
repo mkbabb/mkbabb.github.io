@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdn.rawgit.com/dreampulse/computer-modern-web-font/master/fonts.css"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+            integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+            crossorigin="anonymous"
+        />
+    </head>
+
+    <body>
+        <div id="background"></div>
+
+        <div class="logo"></div>
+
+        <div class="navbar-container affix" id="navbar-container">
+            <a href="#" class="menu-icon" id="menu-icon">
+                <div class="menu-icon__line"></div>
+                <div class="menu-icon__line"></div>
+                <div class="menu-icon__line"></div>
+            </a>
+            <ul class="navbar-body slide-toggle" id="navbar-body">
+                <div class="profile-icon-wrap-sm">
+                    <img
+                        src="https://www.fi.ncsu.edu/wp-content/themes/hillsborough/assets/img/ncstate-brick-2x2-red.png"
+                        class="ncsu-logo"
+                        alt="NC State"
+                    />
+                </div>
+                <li><a href="site.html">Home</a></li>
+                <li>
+                    Work<i class="fas fa-arrow-right"></i>
+                    <ul class="navbar-dropdown" id="dropdown-1">
+                        <li>Item1</li>
+                        <li>Item2</li>
+                        <li>Item3</li>
+                        <li>
+                            Dropdown<i class="fas fa-arrow-right"></i>
+                            <ul class="navbar-dropdown" id="dropdown-1">
+                                <li>Item1</li>
+                                <li>Item2</li>
+                                <li>Item3</li>
+                                <li>
+                                    Dropdown<i class="fas fa-arrow-right"></i>
+                                    <ul class="navbar-dropdown" id="dropdown-1">
+                                        <li>Item1</li>
+                                        <li>Item2</li>
+                                        <li>Item3</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div id="area-1" class="scene">
+            <div class="carousel" id="carousel">
+                <div class="carousel-cell" id="main-cell">
+                    <div class="title">Content1</div>
+                    <p>
+                        Insert content here!
+                    </p>
+                    <br />
+                </div>
+                <div class="carousel-cell">
+                    <div class="title">Content2</div>
+                    <p>
+                        Insert content here!
+                    </p>
+                    <br />
+                </div>
+                <div class="carousel-cell">
+                    <div class="title">ImageContent</div>
+                    <image src="./anim/iu-2.jpeg" class="image"> </image>
+                    <div class="description">
+                        This is a picture!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="start-container">
+            <div id="start-cards-container" class="distribute-cards">
+                <div class="origin">
+                    <button class="btn-prime" id="start-btn">
+                        click.
+                    </button>
+                </div>
+                <div id="start-cards" class="cards">
+                    <button id="rotate-btn" class="btn-second">
+                        Rotate
+                    </button>
+                    <button id="transpose-btn" class="btn-second">
+                        Transpose
+                    </button>
+                    <button id="shuffle-btn" class="btn-second">
+                        Shuffle
+                    </button>
+                    <button id="scroll-btn" class="btn-second">
+                        Scroll
+                    </button>
+                    <button id="rotate-btn" class="btn-second">
+                        placeholder_text
+                    </button>
+                    <button id="rotate-btn" class="btn-second">
+                        placeholder_text
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div id="area-2" class="main-content">
+            <p id="me1" style="grid-area: a">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
+                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
+                necessitatibus harum impedit, repudiandae sit corrupti?
+            </p>
+            <p id="me2" style="grid-area: b">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
+                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
+                necessitatibus harum impedit, repudiandae sit corrupti?
+            </p>
+            <p id="me3" style="grid-area: c">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
+                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
+                necessitatibus harum impedit, repudiandae sit corrupti?
+            </p>
+            <div class="side-right" style="grid-area: pa">
+                <image src="./anim/legendre.jpg" class="image floating">
+                </image>
+                <div class="description">Legendre</div>
+            </div>
+
+            <div class="side-right" style="grid-area: pb">
+                <image src="./anim/fourier.jpg" class="image floating"> </image>
+                <div class="description">Fourier</div>
+            </div>
+
+            <div class="side-right" style="grid-area: pc">
+                <image src="./anim/iu-1.png" class="image floating"> </image>
+                <div class="description">Test</div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div id="area-3" class="main-content">
+            <p id="me11" style="grid-area: a">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
+                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
+                necessitatibus harum impedit, repudiandae sit corrupti?
+            </p>
+            <p id="me22" style="grid-area: b">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
+                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
+                necessitatibus harum impedit, repudiandae sit corrupti?
+            </p>
+            <p id="me33" style="grid-area: c">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
+                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
+                necessitatibus harum impedit, repudiandae sit corrupti?
+            </p>
+            <div class="distribute-cards-container">
+                <div id="fun-cards-container" class="distribute-cards">
+                    <div class="origin">
+                        <button class="btn-prime" id="fun-btn">
+                            Click me!
+                        </button>
+                    </div>
+                    <div id="fun-cards" class="cards">
+                        <button id="rotate-btn" class="btn-second">
+                            1Rotate
+                        </button>
+                        <button id="transpose-btn" class="btn-second">
+                            2Transpose
+                        </button>
+                        <button id="shuffle-btn" class="btn-second">
+                            3Shuffle
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="anim.js"></script>
+</html>

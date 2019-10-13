@@ -1,0 +1,596 @@
+export {
+    affixer,
+    debounce,
+    easeInBounce,
+    interpColor,
+    lerp,
+    listElementsCoords,
+    scrollIn,
+    sleep,
+    slideToggle,
+    smoothScroll,
+    toggle,
+    toggleOnce,
+    getOffset,
+};
+
+function sleep(ms)
+{
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function toggle(el, firstCallback, secondCallback)
+{
+    let toggled = el.getAttribute("toggled") === "true";
+    if (!toggled) {
+        firstCallback(el);
+    } else {
+        secondCallback(el);
+    }
+    el.setAttribute("toggled", !toggled);
+    return;
+}
+
+function toggleOnce(el, firstCallback)
+{
+    let toggled = el.getAttribute("toggled") === "true";
+    if (!toggled) {
+        firstCallback(el);
+        el.setAttribute("toggled", true);
+    }
+    return;
+}
+
+if (!String.prototype.splice) {
+    /**
+     * {JSDoc}
+     *
+     * The splice() method changes the content of a string by removing a range
+     * of characters and/or adding new characters.
+     *
+     * @this {String}
+     * @param {number} start Index at which to start changing the string.
+     * @param {number} delCount An integer indicating the number of old chars to
+     *   remove.
+     * @param {string} newSubStr The String that is spliced in.
+     * @return {string} A new string with the spliced substring.
+     */
+    String.prototype.splice = function(start, delCount, newSubStr) {
+        return (this.slice(0, start) + newSubStr +
+                this.slice(start + Math.abs(delCount)));
+    };
+}
+
+function slideToggle(id)
+{
+    let el = document.getElementById(`${id}`);
+
+    let slideHeight;
+    if (!el.getAttribute("slide-height")) {
+        el.style.height = "100%";
+        slideHeight = el.offsetHeight;
+        el.setAttribute("slide-height", slideHeight);
+        el.style.height = `${slideHeight}px`;
+        return;
+    } else {
+        slideHeight = el.getAttribute("slide-height");
+    }
+
+    if (el.style.height === "0px") {
+        requestAnimationFrame(() => (el.style.height = `${slideHeight}px`));
+    } else {
+        requestAnimationFrame(() => (el.style.height = 0));
+    }
+}
+
+function _DeCasteljau(t, points, ix1, ix2, n)
+{
+    let b0, b1;
+
+    if (n == 1) {
+        b0 = points[ix1];
+        b1 = points[ix2];
+    } else {
+        n--;
+        b0 = _DeCasteljau(t, points, ix1, ix2, n);
+        // console.log(`B_${n - 1}_${ix1 + 1}, B_${n}_${ix2 + 1}`)
+        b1 = _DeCasteljau(t, points, ix2, ix2 + 1, n);
+        // console.log(`B_${n - 1}_${ix1 + 1 + 1}, B_${n}_${ix2 + 1 + 1}`)
+    }
+
+    return (1 - t) * b0 + t * b1;
+}
+
+function DeCasteljau(t, points)
+{
+    return _DeCasteljau(t, points, 0, 1, points.length - 1);
+}
+
+function cubicBezier(t, x1, y1, x2, y2)
+{
+    return [
+        DeCasteljau(t, [ 0, x1, x2, 1 ]),
+        DeCasteljau(t, [ 0, y1, y2, 1 ])
+    ];
+}
+
+function wrap(toWrap, wrapper)
+{
+    let wrapped = toWrap.parentNode.insertBefore(wrapper, toWrap);
+    return wrapped.appendChild(toWrap);
+}
+
+function affixer(preAffixFunc, postAffixFunc)
+{
+    const offsets = [];
+
+    document.querySelectorAll(".affix").forEach((el, n) => {
+        let offset = getOffset(el);
+        offsets.push(offset);
+        let wrapped = document.createElement("div");
+
+        wrapped.style.height = `${offset.height}px`;
+        wrapped.style.width = `${offset.width}px`;
+
+        wrap(el, wrapped);
+    });
+
+    window.addEventListener("resize", function(el) {
+        document.querySelectorAll(".affix").forEach((el, n) => {
+            let offset = getOffset(el);
+            offsets[n] = offset;
+            el.style.top = `${- offsets[n].top}px`;
+            el.style.width = `${window.innerWidth - offsets[n].left}px`;
+
+            let wrapped = el.parentNode;
+
+            wrapped.style.width =
+              `${window.innerWidth - 2 * offsets[n].left}px`;
+            wrapped.style.top = `${- offsets[n].top}px`;
+        });
+    });
+
+    window.addEventListener("scroll", scrollAffix);
+    function scrollAffix()
+    {
+        document.querySelectorAll(".affix").forEach((el, n) => {
+            let affixY = offsets[n].top;
+
+            if (self.pageYOffset > affixY) {
+                preAffixFunc(el, n);
+                el.style.zIndex = 999;
+                el.style.position = "fixed";
+                el.style.top = `${- offsets[n].top}px`;
+                el.style.width = `${window.innerWidth - 2 * offsets[n].left}px`;
+
+            } else {
+                postAffixFunc(el, n);
+                el.style.top = `${0}px`;
+                el.style.position = "relative";
+                el.style.width = `${window.innerWidth - 2 * offsets[n].left}px`;
+            }
+        });
+    }
+}
+
+function debounce(func, wait, immediate)
+{
+    var timeout;
+    return function() {
+        var context = this;
+        var args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate)
+                func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow)
+            func.apply(context, args);
+    };
+}
+
+function easeInBounce(t, b, c, d)
+{
+    t = cubicBezier(t / d, 0.09, 0.91, 0.5, 1.5)[1];
+    return c * t + b;
+}
+
+function bounceInEase(t, b, c, d)
+{
+    t = cubicBezier(t / d, 0.19, -0.53, 0.83, 0.67)[1];
+    return c * t + b;
+}
+
+function easeInQuad(t, b, c, d)
+{
+    return c * (t /= d) * t + b;
+}
+
+function easeOutQuad(t, b, c, d)
+{
+    return -c * (t /= d) * (t - 2) + b;
+}
+
+function easeInOutQuad(t, b, c, d)
+{
+    if ((t /= d / 2) < 1)
+
+        return (c / 2) * t * t + b;
+    return (-c / 2) * (--t * (t - 2) - 1) + b;
+}
+
+function easeInCubic(t, b, c, d)
+{
+    return c * (t /= d) * t * t + b;
+}
+
+function easeOutCubic(t, b, c, d)
+{
+    return c * ((t = t / d - 1) * t * t + 1) + b;
+}
+
+function easeInOutCubic(t, b, c, d)
+{
+    if ((t /= d / 2) < 1)
+        return (c / 2) * t * t * t + b;
+    return (c / 2) * ((t -= 2) * t * t + 2) + b;
+}
+
+function smoothStep3(t, b, c, d)
+{
+    t /= d;
+    return c * Math.pow(t, 2) * (3 - 2 * t) + b;
+}
+
+function smoothStep5(t, b, c, d)
+{
+    t /= d;
+    return c * Math.pow(t, 3) * (t * (t * 6 - 15) + 10) + b;
+}
+
+function smoothStep7(t, b, c, d)
+{
+    t /= d;
+    return c * Math.pow(t, 4) + b;
+}
+
+function lerp(v0, v1, t)
+{
+    return (1 - t) * v0 + t * v1;
+}
+
+function logerp(v0, v1, t)
+{
+    v0 = v0 === 0 ? 1e-9 : v0;
+    let tt = v0 * Math.pow(v1 / v0, t);
+    return tt;
+}
+
+function clamp(x, lowerLimit, upperLimit)
+{
+    if (x < lowerLimit) {
+        return lowerLimit;
+    } else if (x > upperLimit) {
+        return upperLimit;
+    }
+    return x;
+}
+
+function toBase(num, base)
+{
+    let digits = [];
+    while (num !== 0) {
+        num = (num / base) >> 0;
+        digits.push(num % base);
+    }
+    if (base === 10) {
+        let based = 0;
+        digits.forEach(
+          (value, index) => { based += value * Math.pow(10, index); });
+        return based;
+    } else {
+        let based = "";
+        digits.reverse().forEach((value, index) => { based += value; });
+        return based;
+    }
+}
+
+function hexToRGB(num, alpha = 1)
+{
+    let rgbInt = parseInt(num, 16);
+    let r = (rgbInt >> 16) & 255;
+    let g = (rgbInt >> 8) & 255;
+    let b = rgbInt & 255;
+    return [ r, g, b, alpha ];
+}
+
+function RGBAToHex(num)
+{
+    let [r, g, b, a] = num;
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+function colorToRGBA(color)
+{
+    let canvas = document.createElement("canvas");
+    canvas.height = 1;
+    canvas.width = 1;
+    let ctx = canvas.getContext("2d");
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, 1, 1);
+    return Array.from(ctx.getImageData(0, 0, 1, 1).data);
+}
+
+function parseColor(color)
+{
+    let pcolor;
+    if (typeof color === "string") {
+        if (color[0] === "#") {
+            color = color.slice(1);
+
+            if (color.length == 3) {
+                let len = color.length;
+                let i = 0;
+                do {
+                    let c = color[i];
+                    color = color.splice(i, 0, c);
+                    i += 2;
+                } while (++len < 6);
+            }
+            pcolor = hexToRGB(color);
+        } else if (color.indexOf("rgb") !== -1) {
+            let num = color.split("(")[1].split(")")[0];
+            let pnum = num.split(",");
+            if (pnum.length === undefined || 0) {
+                pnum = num.split(" ");
+                if (pnum.length === undefined || 0) {
+                    throw new Error("Color is of an undefined type.");
+                }
+            }
+            pcolor = pnum.map((value, index) => {
+                value = parseInt(value);
+                return value;
+            });
+        } else {
+            pcolor = colorToRGBA(color);
+        }
+    } else {
+        pcolor = color;
+    }
+    if (pcolor instanceof Array) {
+        let len = pcolor.length;
+        let diff = 4 - len;
+        if (diff > 0) {
+            pcolor = pcolor.concat(new Array(diff).fill(1));
+        } else if (diff < 0) {
+            pcolor.length = 4;
+        }
+    } else {
+        throw new Error("Color is of an undefined type.");
+    }
+    return pcolor;
+}
+
+function easeInQuad1(v0, v1, t)
+{
+    return lerp(v0, v1, t);
+}
+
+function interpColor(colors, steps = 2, endPoints = true, interpFunc = lerp)
+{
+    let palettes = new Array((colors.length - 1) * steps).fill(0);
+    colors.forEach((value, index) => { colors[index] = parseColor(value); });
+    let i = 0;
+    for (let [n, color] of colors.entries()) {
+        if (n < colors.length - 1) {
+            let [r1, g1, b1, a1] = color;
+            let [r2, g2, b2, a2] = colors[n + 1];
+
+            for (let m = endPoints & (n === 0) ? 0 : 1; m <= steps; m++) {
+                if (m === steps && n === colors.length - 2 && !endPoints)
+                    break;
+                let t = m / steps;
+                let ri = Math.ceil(interpFunc(r1, r2, t));
+                let gi = Math.ceil(interpFunc(g1, g2, t));
+                let bi = Math.ceil(interpFunc(b1, b2, t));
+                let ai = interpFunc(a1, a2, t);
+                ai = ai > 1 ? Math.ceil(ai) : ai;
+
+                let colorString = ` rgba(${ri}, ${gi}, ${bi}, ${ai}) `;
+                palettes[i++] = RGBAToHex(parseColor(colorString));
+            }
+        } else {
+            break;
+        }
+    }
+    return palettes;
+}
+
+function averageColorDelta(colors)
+{
+    let len = colors.length;
+    let r_avg = 0;
+    let g_avg = 0;
+    let b_avg = 0;
+    let a_avg = 0;
+
+    for (let [i, j] of colors) {
+        let [rd, gd, bd, ad] = operateColor(parseColor(i),
+                                            parseColor(j),
+                                            (x, y) => { return y - x; });
+        r_avg += rd;
+        g_avg += gd;
+        b_avg += bd;
+        a_avg += ad;
+    }
+    r_avg = ~~(r_avg / len);
+    g_avg = ~~(g_avg / len);
+    b_avg = ~~(b_avg / len);
+    a_avg = ~~(a_avg / len);
+    return [ r_avg, g_avg, b_avg, 0 ];
+}
+
+function operateColor(c1, c2, op = (x, y) => { return x + y; })
+{
+    color1 = parseColor(c1);
+    color2 = parseColor(c2);
+    color3 = [ 0, 0, 0, 0 ];
+
+    for (let i = 0; i < color1.length; i++) {
+        color3[i] = op(color1[i], color2[i]);
+    }
+    return color3;
+}
+
+function colorDeltaFromData(color, data)
+{
+    avg = averageColorDelta(data);
+    altColor = operateColor(avg, color);
+    return altColor;
+}
+
+function RGBAToString(color)
+{
+    return ` rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]}) `;
+}
+
+class Clock
+{
+    constructor(autoStart = true, timeStep = 1000 / 60)
+    {
+        this.autoStart = autoStart;
+        this.timeStep = Math.floor(timeStep);
+    }
+    start()
+    {
+        this.startTime =
+          (typeof performance === "undefined" ? Date : performance).now();
+        this.prevTime = this.startTime;
+        this.elapsedTime = 0;
+        this.elapsedTicks = 0;
+        this.running = true;
+        this.delta = 0;
+    }
+    stop() { this.running = false; }
+    reset() { this.start(); }
+    tick()
+    {
+        this.delta = 0;
+        if (this.autoStart && !this.running) {
+            this.start();
+        } else if (this.running) {
+            let currentTime =
+              (typeof performance === "undefined" ? Date : performance).now();
+            this.delta = currentTime - this.prevTime;
+            this.prevTime = currentTime;
+            this.elapsedTime += this.delta;
+            this.elapsedTicks += this.timeStep;
+        }
+        return this.delta;
+    }
+}
+
+function smoothScroll(from, target, duration, timingFunction = smoothStep3)
+{
+    duration = Math.ceil(duration);
+
+    if (duration <= 0) {
+        return;
+    }
+
+    let to = Math.ceil(target);
+    from = Math.ceil(from);
+    let distance = to - from;
+
+    var clock = new Clock();
+
+    function update()
+    {
+        let v = Math.floor(
+          timingFunction(clock.elapsedTicks, from, distance, duration));
+        window.scroll(0, v);
+    }
+
+    function draw() {}
+
+    function animationLoop()
+    {
+        clock.tick();
+
+        let delta = clock.delta;
+        let updateSteps = 0;
+
+        while (delta >= clock.timeStep) {
+            delta -= clock.timeStep;
+            clock.tick();
+
+            update();
+            if (updateSteps++ >= 120) {
+                break;
+            }
+        }
+        draw();
+        if (clock.elapsedTicks / duration > 1) {
+            return true;
+        } else {
+            requestAnimationFrame(animationLoop);
+        }
+    }
+    clock.start();
+    requestAnimationFrame(animationLoop);
+}
+
+function getOffset(el)
+{
+    const rect = el.getBoundingClientRect();
+    return {
+        left : rect.left + window.scrollX,
+        top : rect.top + window.scrollY,
+        width : rect.width,
+        height : rect.height
+    };
+}
+
+function scrollIn(elementNode,
+                  scrollFunc,
+                  offsetMin = 0,
+                  offsetMax = 0,
+                  limitingNode = null)
+{
+    let elementOffset = getOffset(elementNode);
+
+    let min = elementOffset.top * 0.9;
+
+    let dy = window.scrollY + window.innerHeight / 2;
+    let inRange = dy >= min;
+
+    if (!inRange) {
+        scrollFunc(elementNode, 0, inRange);
+        return inRange;
+    }
+
+    let max = elementOffset.top + elementOffset.height * 0.2 + offsetMax;
+
+    let limitingOffset = getOffset(limitingNode || document.body);
+    let tMax =
+      limitingOffset.top + limitingOffset.height - window.innerHeight / 2;
+
+    max = max >= tMax ? tMax : max;
+
+    let v = inRange ? (dy - min) / (max - min) : 0;
+    console.log(v, min, max, dy);
+    scrollFunc(elementNode, v, inRange);
+    return true;
+}
+
+function listElementsCoords(elements)
+{
+    let coords = [];
+    for (let i of elements) {
+        coords.push(getOffset(i));
+    }
+    return coords;
+}
