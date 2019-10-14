@@ -1,6 +1,6 @@
 import {Color, Mat3, Renderer, Transform, Vec3} from "./src/Core.js";
 import {Polyline} from "./src/Extras.js";
-import {fromRotation, fromScaling} from "./src/Math/functions/Mat3Func.js";
+import {fromRotation} from "./src/Math/functions/Mat3Func.js";
 import {transformMat3} from './src/Math/functions/Vec3Func.js';
 import {easeInBounce, interpColor, lerp as lerper} from "./utils.js";
 
