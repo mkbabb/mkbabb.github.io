@@ -9,14 +9,16 @@ export {
     lerp,
     listElementsCoords,
     rollCarousel,
+    round,
     scrollIn,
+    scrollInPreamble,
     shuffleCarousel,
     sleep,
     slideToggle,
     smoothScroll,
     toggle,
     toggleOnce,
-    transposeCarousel,
+    transposeCarousel
 };
 
 if (!String.prototype.splice) {
@@ -50,6 +52,7 @@ function initCarousel(carousel)
         carousel.setAttribute("index", 0);
         carousel.setAttribute("cell-axis", cellHeight);
         carousel.setAttribute("axis", "y");
+        carousel.setAttribute("paused", false);
     }
 }
 
@@ -289,17 +292,18 @@ function distributeCards(origin,
     });
 
     let originOffset = getOffset(origin);
+    let ds = (originOffset.width - maxWidth) / 2;
 
     let dx = maxWidth + sx;
     let dy = maxHeight + sy;
-    let x0 = -(maxWidth) * (columns - 1) / 2;
+    let x0 = -dx * (columns - 1) / 2 + ds;
     let y0 = originOffset.height + sy;
 
-    let x = 0;
-    let y = 0;
-    if (deal) {
-        x = x0;
-        y = y0;
+    let x = x0;
+    let y = y0;
+    if (!deal) {
+        x = ds;
+        y = 0;
     }
 
     let i = 1;
@@ -698,35 +702,70 @@ function getOffset(el)
     };
 }
 
-function scrollIn(elementNode,
+function round(n, d, mode = 0)
+{
+    let ten = Math.pow(10, d);
+    let v = 0;
+    if (mode === 0) {
+        v = Math.round(n * ten);
+    } else if (mode === 1) {
+        v = Math.ceil(n * ten);
+    } else if (mode === 2) {
+        v = Math.floor(n * ten);
+    }
+    return v / ten;
+}
+
+function scrollInPreamble(elementNode, offsetMin, offsetMax, force = false)
+{
+    if ((!elementNode.hasAttribute("scroll-in-min") && !force) &&
+        (!elementNode.getAttribute("scroll-in-max") && !force)) {
+        let elementOffset = getOffset(elementNode);
+        let min = elementOffset.top + offsetMin;
+        let max = elementOffset.top + elementOffset.height / 2 + offsetMax;
+        elementNode.setAttribute("scroll-in-min", round(min, 2));
+        elementNode.setAttribute("scroll-in-max", round(max, 2));
+        return true;
+    }
+    console.log(elementNode);
+    return false;
+}
+
+function scrollIn(dy,
+                  elementNode,
                   scrollFunc,
                   offsetMin = 0,
                   offsetMax = 0,
                   limitingNode = null)
 {
+    if (dy == -1) {
+        scrollInPreamble(elementNode, offsetMin, offsetMax);
+        requestAnimationFrame(
+          function() { scrollFunc(elementNode, 0, dy, 0, 100000); });
 
-    let elementOffset = getOffset(elementNode);
-
-    let min = elementOffset.top + offsetMin;
-    let max = elementOffset.top + elementOffset.height / 2 + offsetMax;
-
-    let dy = window.scrollY + window.innerHeight / 2;
-
-    if (dy <= min) {
-        scrollFunc(elementNode, 0, dy, min, max);
         return false;
     }
 
-    let limitingOffset = getOffset(limitingNode || document.body);
-    let tMax =
-      limitingOffset.top + limitingOffset.height - window.innerHeight / 2;
+    let min = parseFloat(elementNode.getAttribute("scroll-in-min"));
+    let max = parseFloat(elementNode.getAttribute("scroll-in-max"));
 
-    max = max >= tMax ? tMax : max;
+    if (dy <= min) {
+        requestAnimationFrame(
+          function() { scrollFunc(elementNode, 0, dy, min, max); });
+        return true;
+    } else {
+        let limitingOffset = getOffset(limitingNode || document.body);
+        let tMax =
+          limitingOffset.top + limitingOffset.height - window.innerHeight / 2;
 
-    let v = (dy >= min) ? (dy - min) / (max - min) : 0;
+        max = max >= tMax ? tMax : max;
 
-    scrollFunc(elementNode, v, dy, min, max);
-    return true;
+        let v = (dy >= min) ? (clamp(dy, min, max) - min) / (max - min) : 0;
+
+        requestAnimationFrame(
+          function() { scrollFunc(elementNode, v, dy, min, max); });
+        return false;
+    }
 }
 
 function listElementsCoords(elements)

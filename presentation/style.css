@@ -21,6 +21,26 @@ body {
   margin: 10rem, 10rem;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 1rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #eeeeee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 ​ .navbar-container {
   display: block;
   left: 0;
@@ -478,7 +498,10 @@ li:hover > .navbar-dropdown li {
       grid-template-rows: 25fr 1fr;
   -ms-flex-line-pack: stretch;
       align-content: stretch;
-  margin-bottom: 40rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-bottom: 1rem;
   position: relative;
 }
 
@@ -489,11 +512,24 @@ li:hover > .navbar-dropdown li {
   text-shadow: -3px 3px 2px rgba(51, 51, 51, 0.5);
   margin: auto;
   width: 100%;
+  border: 1px solid black;
   border-bottom-right-radius: 20rem;
   font-size: 10rem;
   text-align: center;
   height: 100%;
+  line-height: 15rem;
   color: black;
+}
+
+.title-container #logo canvas {
+  grid-area: "a";
+  position: absolute;
+  left: 0;
+  margin: 0 auto;
+  right: 0;
+  z-index: -1;
+  top: 0;
+  background: transparent;
 }
 
 .start-container {
@@ -573,7 +609,7 @@ li:hover > .navbar-dropdown li {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: 28rem;
+  height: 35rem;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -583,7 +619,7 @@ li:hover > .navbar-dropdown li {
   -webkit-perspective: 500px;
           perspective: 500px;
   position: relative;
-  width: 45rem;
+  width: 56rem;
 }
 
 .carousel {
@@ -623,7 +659,7 @@ li:hover > .navbar-dropdown li {
           flex-direction: column;
   font-family: var(--main-font);
   font-size: 2rem;
-  height: 28rem;
+  height: 35rem;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -636,7 +672,7 @@ li:hover > .navbar-dropdown li {
   transition: transform cubic-bezier(0.09, 0.91, 0.5, 1.1) 700ms, opacity 1s;
   transition: transform cubic-bezier(0.09, 0.91, 0.5, 1.1) 700ms, opacity 1s, -webkit-transform cubic-bezier(0.09, 0.91, 0.5, 1.1) 700ms;
   vertical-align: middle;
-  width: 45rem;
+  width: 56rem;
 }
 
 .carousel-cell p {
@@ -652,6 +688,11 @@ li:hover > .navbar-dropdown li {
 .carousel-cell .title {
   font-size: 3rem;
   text-decoration: underline;
+}
+
+.carousel-cell .image {
+  height: 24.5rem;
+  width: 39.2rem;
 }
 
 .carousel-cell .description {
@@ -793,6 +834,33 @@ hr {
   font-size: 1.5rem;
 }
 
+.main-content .align-center {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.main-content .align-left {
+  -webkit-box-pack: left;
+      -ms-flex-pack: left;
+          justify-content: left;
+  -webkit-box-align: left;
+      -ms-flex-align: left;
+          align-items: left;
+}
+
+.main-content .align-right {
+  -webkit-box-pack: right;
+      -ms-flex-pack: right;
+          justify-content: right;
+  -webkit-box-align: right;
+      -ms-flex-align: right;
+          align-items: right;
+}
+
 .main-content .content-cell {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -819,6 +887,19 @@ hr {
   margin-bottom: 0.2rem;
   font-style: bold;
   font-weight: 100;
+}
+
+.main-content .content-cell .content .image {
+  margin: auto;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  height: 25rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: 100% 40%;
+     object-position: 100% 40%;
+  width: 25rem;
 }
 
 .main-content .content-cell .description {
@@ -908,22 +989,23 @@ hr {
           column-gap: 1rem;
   display: -ms-grid;
   display: grid;
-      grid-template-areas: "h" "b" "c";
+      grid-template-areas: "h h" "b c";
   -ms-grid-columns: 1fr;
       grid-template-columns: 1fr;
-  -ms-grid-rows: 0.5fr 1fr 0.5fr;
-      grid-template-rows: 0.5fr 1fr 0.5fr;
+  -ms-grid-rows: 0.5fr 1fr;
+      grid-template-rows: 0.5fr 1fr;
 }
 
 .grid-layout-4 {
   -webkit-column-gap: 1rem;
           column-gap: 1rem;
+  row-gap: 1rem;
   display: -ms-grid;
   display: grid;
-      grid-template-areas: "h h h h" "a a b b" "c c d d";
-  -ms-grid-columns: 1fr 2fr 2fr 1fr;
-      grid-template-columns: 1fr 2fr 2fr 1fr;
-  -ms-grid-rows: 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr 1fr;
+      grid-template-areas: "h h h h" "a a b b" "i i j j" "c c d d";
+  -ms-grid-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+  -ms-grid-rows: 1fr 1fr 3fr 1fr;
+      grid-template-rows: 1fr 1fr 3fr 1fr;
 }
 /*# sourceMappingURL=style.css.map */
