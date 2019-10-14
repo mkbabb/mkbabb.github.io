@@ -1,18 +1,123 @@
 export {
     affixer,
     debounce,
+    distributeCards,
     easeInBounce,
+    getOffset,
+    initCarousel,
     interpColor,
     lerp,
     listElementsCoords,
+    rollCarousel,
     scrollIn,
+    shuffleCarousel,
     sleep,
     slideToggle,
     smoothScroll,
     toggle,
     toggleOnce,
-    getOffset,
+    transposeCarousel,
 };
+
+if (!String.prototype.splice) {
+    /**
+     * {JSDoc}
+     *
+     * The splice() method changes the content of a string by removing a range
+     * of characters and/or adding new characters.
+     *
+     * @this {String}
+     * @param {number} start Index at which to start changing the string.
+     * @param {number} delCount An integer indicating the number of old chars to
+     *   remove.
+     * @param {string} newSubStr The String that is spliced in.
+     * @return {string} A new string with the spliced substring.
+     */
+    String.prototype.splice = function(start, delCount, newSubStr) {
+        return (this.slice(0, start) + newSubStr +
+                this.slice(start + Math.abs(delCount)));
+    };
+}
+
+function initCarousel(carousel)
+{
+    if (!carousel.getAttribute("cell-height")) {
+        let cellStyle = getComputedStyle(carousel.children[0]);
+        let cellWidth = parseInt(cellStyle.width.replace("px", "")) + 100;
+        let cellHeight = parseInt(cellStyle.height.replace("px", "")) + 100;
+        carousel.setAttribute("cell-height", cellHeight);
+        carousel.setAttribute("cell-width", cellWidth);
+        carousel.setAttribute("index", 0);
+        carousel.setAttribute("cell-axis", cellHeight);
+        carousel.setAttribute("axis", "y");
+    }
+}
+
+function rollCarousel(carousel)
+{
+    let cellCount = carousel.children.length;
+
+    let index = parseInt(carousel.getAttribute("index"));
+    let cellAxis = parseInt(carousel.getAttribute("cell-axis"));
+    let axis = carousel.getAttribute("axis");
+
+    let radius =
+      Math.floor((cellAxis / 2) * (1 / Math.tan(Math.PI / cellCount)));
+    let alpha = (2 * Math.PI) / cellCount;
+
+    for (let i = 0; i < carousel.children.length; i++) {
+        let alpha_i = alpha * (index - i);
+
+        let child = carousel.children[i];
+        child.style.transform =
+          `rotate${axis}(${alpha_i}rad) translateZ(${radius}px)`;
+
+        if (i === index % cellCount) {
+            child.setAttribute("id", "main-cell");
+            child.style.opacity = `1`;
+        } else {
+            child.setAttribute("id", "");
+            child.style.opacity = `${1 / Math.cos(alpha_i)}%`;
+        }
+    }
+    carousel.setAttribute("index", `${++index}`);
+}
+
+function transposeCarousel(carousel)
+{
+    let cellCount = carousel.children.length;
+    let cellHeight = carousel.getAttribute("cell-height");
+    let cellWidth = carousel.getAttribute("cell-width");
+    let cellAxis = carousel.getAttribute("cell-axis");
+    let axis = carousel.getAttribute("axis");
+
+    if (axis == "x") {
+        cellAxis = cellWidth;
+        axis = "y";
+    } else {
+        cellAxis = cellHeight;
+        axis = "x";
+    }
+
+    carousel.setAttribute("cell-axis", cellAxis);
+    carousel.setAttribute("axis", axis);
+
+    let radius = Math.floor((parseInt(cellAxis) / 2) *
+                            (1 / Math.tan(Math.PI / cellCount)));
+
+    rollCarousel(carousel);
+
+    carousel.style.transform = `translateZ(${- radius}px)`;
+}
+
+async function shuffleCarousel(carousel, shuffleCount)
+{
+    for (let i = 0; i < shuffleCount; i++) {
+        transposeCarousel(carousel);
+        await sleep(250);
+    }
+    transposeCarousel(carousel);
+}
 
 function sleep(ms)
 {
@@ -41,68 +146,59 @@ function toggleOnce(el, firstCallback)
     return;
 }
 
-if (!String.prototype.splice) {
-    /**
-     * {JSDoc}
-     *
-     * The splice() method changes the content of a string by removing a range
-     * of characters and/or adding new characters.
-     *
-     * @this {String}
-     * @param {number} start Index at which to start changing the string.
-     * @param {number} delCount An integer indicating the number of old chars to
-     *   remove.
-     * @param {string} newSubStr The String that is spliced in.
-     * @return {string} A new string with the spliced substring.
-     */
-    String.prototype.splice = function(start, delCount, newSubStr) {
-        return (this.slice(0, start) + newSubStr +
-                this.slice(start + Math.abs(delCount)));
-    };
-}
-
-function slideToggle(id)
+function slideToggle(el)
 {
-    let el = document.getElementById(`${id}`);
-
     let slideHeight;
     if (!el.getAttribute("slide-height")) {
         el.style.height = "100%";
-        slideHeight = el.offsetHeight;
+        slideHeight = getOffset(el).height;
         el.setAttribute("slide-height", slideHeight);
         el.style.height = `${slideHeight}px`;
+
         return;
     } else {
         slideHeight = el.getAttribute("slide-height");
     }
 
     if (el.style.height === "0px") {
-        requestAnimationFrame(() => (el.style.height = `${slideHeight}px`));
+        requestAnimationFrame(() => { el.style.height = `${slideHeight}px`; });
+        el.style.overflow = "visible";
+
     } else {
-        requestAnimationFrame(() => (el.style.height = 0));
+        requestAnimationFrame(() => {
+            el.style.height = 0;
+            el.style.overflow = "hidden";
+        });
     }
-}
-
-function _DeCasteljau(t, points, ix1, ix2, n)
-{
-    let b0, b1;
-
-    if (n == 1) {
-        b0 = points[ix1];
-        b1 = points[ix2];
-    } else {
-        n--;
-        b0 = _DeCasteljau(t, points, ix1, ix2, n);
-        // console.log(`B_${n - 1}_${ix1 + 1}, B_${n}_${ix2 + 1}`)
-        b1 = _DeCasteljau(t, points, ix2, ix2 + 1, n);
-        // console.log(`B_${n - 1}_${ix1 + 1 + 1}, B_${n}_${ix2 + 1 + 1}`)
-    }
-
-    return (1 - t) * b0 + t * b1;
 }
 
 function DeCasteljau(t, points)
 {
+    let dp = new Map();
+
+    function _DeCasteljau(t, points, ix1, ix2, n)
+    {
+        let k = `${n}${ix1}${ix2}`;
+
+        if (dp.has(k)) {
+            return dp.get(k);
+        }
+
+        let b0, b1;
+
+        if (n == 1) {
+            b0 = points[ix1];
+            b1 = points[ix2];
+        } else {
+            n--;
+            b0 = _DeCasteljau(t, points, ix1, ix2, n);
+            b1 = _DeCasteljau(t, points, ix2, ix2 + 1, n);
+        }
+        let v = (1 - t) * b0 + t * b1;
+        dp.set(k, v);
+
+        return v;
+    }
     return _DeCasteljau(t, points, 0, 1, points.length - 1);
 }
 
@@ -131,6 +227,7 @@ function affixer(preAffixFunc, postAffixFunc)
 
         wrapped.style.height = `${offset.height}px`;
         wrapped.style.width = `${offset.width}px`;
+        // wrapped.style.marginTop = `${offset.top}px`;
 
         wrap(el, wrapped);
     });
@@ -160,7 +257,7 @@ function affixer(preAffixFunc, postAffixFunc)
                 preAffixFunc(el, n);
                 el.style.zIndex = 999;
                 el.style.position = "fixed";
-                el.style.top = `${- offsets[n].top}px`;
+                el.style.top = `${0}px`;
                 el.style.width = `${window.innerWidth - 2 * offsets[n].left}px`;
 
             } else {
@@ -171,6 +268,61 @@ function affixer(preAffixFunc, postAffixFunc)
             }
         });
     }
+}
+
+function distributeCards(origin,
+                         cards,
+                         delay,
+                         sx,
+                         sy,
+                         columns,
+                         deal = false,
+                         spacing = "auto")
+{
+    let maxWidth = 0;
+    let maxHeight = 0;
+
+    Array.from(cards.children).forEach((child, n) => {
+        let offset = getOffset(child);
+        maxWidth = offset.width > maxWidth ? offset.width : maxWidth;
+        maxHeight = offset.height > maxHeight ? offset.height : maxHeight;
+    });
+
+    let originOffset = getOffset(origin);
+
+    let dx = maxWidth + sx;
+    let dy = maxHeight + sy;
+    let x0 = -(maxWidth) * (columns - 1) / 2;
+    let y0 = originOffset.height + sy;
+
+    let x = 0;
+    let y = 0;
+    if (deal) {
+        x = x0;
+        y = y0;
+    }
+
+    let i = 1;
+
+    Array.from(cards.children).forEach((child, n) => {
+        child.style.transitionDelay = `${delay * n}ms`;
+        child.style.transform = `translate(${x}px, ${y}px)`;
+
+        if (deal) {
+            child.style.opacity = 1;
+
+            if (i > columns - 1) {
+                x = x0;
+                y += spacing === "auto" ? getOffset(child).height + sy : dy;
+                i = 0;
+            } else {
+                x += spacing === "auto" ? getOffset(child).width + sx : dx;
+            }
+        } else {
+            child.style.opacity = 0;
+        }
+        i++;
+    });
 }
 
 function debounce(func, wait, immediate)
@@ -243,18 +395,6 @@ function smoothStep3(t, b, c, d)
 {
     t /= d;
     return c * Math.pow(t, 2) * (3 - 2 * t) + b;
-}
-
-function smoothStep5(t, b, c, d)
-{
-    t /= d;
-    return c * Math.pow(t, 3) * (t * (t * 6 - 15) + 10) + b;
-}
-
-function smoothStep7(t, b, c, d)
-{
-    t /= d;
-    return c * Math.pow(t, 4) + b;
 }
 
 function lerp(v0, v1, t)
@@ -372,11 +512,6 @@ function parseColor(color)
         throw new Error("Color is of an undefined type.");
     }
     return pcolor;
-}
-
-function easeInQuad1(v0, v1, t)
-{
-    return lerp(v0, v1, t);
 }
 
 function interpColor(colors, steps = 2, endPoints = true, interpFunc = lerp)
@@ -501,6 +636,10 @@ function smoothScroll(from, target, duration, timingFunction = smoothStep3)
         return;
     }
 
+    let bodyOffset = getOffset(document.body);
+    let minHeight = 0;
+    let maxHeight = bodyOffset.height;
+
     let to = Math.ceil(target);
     from = Math.ceil(from);
     let distance = to - from;
@@ -512,6 +651,10 @@ function smoothScroll(from, target, duration, timingFunction = smoothStep3)
         let v = Math.floor(
           timingFunction(clock.elapsedTicks, from, distance, duration));
         window.scroll(0, v);
+        if (v <= 0 || v >= maxHeight) {
+            return true;
+        }
+        return false;
     }
 
     function draw() {}
@@ -522,18 +665,19 @@ function smoothScroll(from, target, duration, timingFunction = smoothStep3)
 
         let delta = clock.delta;
         let updateSteps = 0;
+        let force = false;
 
         while (delta >= clock.timeStep) {
             delta -= clock.timeStep;
             clock.tick();
 
-            update();
+            force = update();
             if (updateSteps++ >= 120) {
                 break;
             }
         }
         draw();
-        if (clock.elapsedTicks / duration > 1) {
+        if (force || clock.elapsedTicks / duration > 1) {
             return true;
         } else {
             requestAnimationFrame(animationLoop);
@@ -560,19 +704,18 @@ function scrollIn(elementNode,
                   offsetMax = 0,
                   limitingNode = null)
 {
+
     let elementOffset = getOffset(elementNode);
 
-    let min = elementOffset.top * 0.9;
+    let min = elementOffset.top + offsetMin;
+    let max = elementOffset.top + elementOffset.height / 2 + offsetMax;
 
     let dy = window.scrollY + window.innerHeight / 2;
-    let inRange = dy >= min;
 
-    if (!inRange) {
-        scrollFunc(elementNode, 0, inRange);
-        return inRange;
+    if (dy <= min) {
+        scrollFunc(elementNode, 0, dy, min, max);
+        return false;
     }
-
-    let max = elementOffset.top + elementOffset.height * 0.2 + offsetMax;
 
     let limitingOffset = getOffset(limitingNode || document.body);
     let tMax =
@@ -580,9 +723,9 @@ function scrollIn(elementNode,
 
     max = max >= tMax ? tMax : max;
 
-    let v = inRange ? (dy - min) / (max - min) : 0;
-    console.log(v, min, max, dy);
-    scrollFunc(elementNode, v, inRange);
+    let v = (dy >= min) ? (dy - min) / (max - min) : 0;
+
+    scrollFunc(elementNode, v, dy, min, max);
     return true;
 }
 

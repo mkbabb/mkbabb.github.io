@@ -17,12 +17,28 @@
             integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
             crossorigin="anonymous"
         />
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+        <link
+            href="https://cdn.ncsu.edu/brand-assets/fonts/include.css"
+            rel="stylesheet"
+        />
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script
+            id="MathJax-script"
+            async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+        ></script>
     </head>
 
     <body>
         <div id="background"></div>
 
-        <div class="logo"></div>
+        <div class="title-container">
+            <div class="title">
+                FI
+            </div>
+            <div id="logo"></div>
+        </div>
 
         <div class="navbar-container affix" id="navbar-container">
             <a href="#" class="menu-icon" id="menu-icon">
@@ -32,27 +48,41 @@
             </a>
             <ul class="navbar-body slide-toggle" id="navbar-body">
                 <div class="profile-icon-wrap-sm">
-                    <img
+                    <a href="https://www.fi.ncsu.edu"><img
                         src="https://www.fi.ncsu.edu/wp-content/themes/hillsborough/assets/img/ncstate-brick-2x2-red.png"
                         class="ncsu-logo"
                         alt="NC State"
-                    />
+                    /></a>
+                    
                 </div>
-                <li><a href="site.html">Home</a></li>
                 <li>
-                    Work<i class="fas fa-arrow-right"></i>
+                    <div class="navbar-main">
+                        <a href="index.html"><div class="icon home">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                            </div></a>
+                        
+                        <div class="description">Home</div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="navbar-main">
+                        <div class="icon work">
+                            <i class="fa fa-briefcase" aria-hidden="true"></i>
+                        </div>
+                        <div class="description">Work</div>
+                    </div>
+
                     <ul class="navbar-dropdown" id="dropdown-1">
-                        <li>Item1</li>
-                        <li>Item2</li>
-                        <li>Item3</li>
+                        <li>RNG stuffs</li>
+                        <li>Monte Carlo</li>
                         <li>
-                            Dropdown<i class="fas fa-arrow-right"></i>
+                            Fourier<i class="fas fa-arrow-right"></i>
                             <ul class="navbar-dropdown" id="dropdown-1">
-                                <li>Item1</li>
-                                <li>Item2</li>
-                                <li>Item3</li>
+                                <li>Transform & c.</li>
+                                <li>Series</li>
                                 <li>
-                                    Dropdown<i class="fas fa-arrow-right"></i>
+                                    Linear Algebra<i class="fas fa-arrow-right"></i>
                                     <ul class="navbar-dropdown" id="dropdown-1">
                                         <li>Item1</li>
                                         <li>Item2</li>
@@ -66,83 +96,126 @@
             </ul>
         </div>
 
-        <div id="area-1" class="scene">
-            <div class="carousel" id="carousel">
-                <div class="carousel-cell" id="main-cell">
-                    <div class="title">Content1</div>
-                    <p>
-                        Insert content here!
-                    </p>
-                    <br />
-                </div>
-                <div class="carousel-cell">
-                    <div class="title">Content2</div>
-                    <p>
-                        Insert content here!
-                    </p>
-                    <br />
-                </div>
-                <div class="carousel-cell">
-                    <div class="title">ImageContent</div>
-                    <image src="./anim/iu-2.jpeg" class="image"> </image>
-                    <div class="description">
-                        This is a picture!
+        <div class="main-content grid-layout-3">
+            <div id="main-title" class="title-content-lg" style="grid-area: h">
+                <div class="title">For us, the storm has passed.</div>
+                <div class="description">The war is over.</div>
+            </div>
+            <div id="area-1" class="scene" style="grid-area: b;">
+                <div class="carousel" id="carousel">
+                    <div class="carousel-cell" id="main-cell">
+                        <div class="title">Content1</div>
+                        <p>
+                            Insert content here!
+                        </p>
+                        <br />
+                    </div>
+                    <div class="carousel-cell">
+                        <div class="title">Content2</div>
+                        <p>
+                            Insert content here!
+                        </p>
+                        <br />
+                    </div>
+                    <div class="carousel-cell">
+                        <div class="title">ImageContent</div>
+                        <image src="./anim/iu-2.jpeg" class="image"> </image>
+                        <div class="description">
+                            This is a picture!
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="start-container">
-            <div id="start-cards-container" class="distribute-cards">
-                <div class="origin">
-                    <button class="btn-prime" id="start-btn">
-                        click.
-                    </button>
-                </div>
-                <div id="start-cards" class="cards">
-                    <button id="rotate-btn" class="btn-second">
-                        Rotate
-                    </button>
-                    <button id="transpose-btn" class="btn-second">
-                        Transpose
-                    </button>
-                    <button id="shuffle-btn" class="btn-second">
-                        Shuffle
-                    </button>
-                    <button id="scroll-btn" class="btn-second">
-                        Scroll
-                    </button>
-                    <button id="rotate-btn" class="btn-second">
-                        placeholder_text
-                    </button>
-                    <button id="rotate-btn" class="btn-second">
-                        placeholder_text
-                    </button>
+            <div class="start-container" style="grid-area: c">
+                <div id="start-cards-container" class="distribute-cards">
+                    <div class="origin">
+                        <button class="btn-prime" id="start-btn">
+                            click.
+                        </button>
+                    </div>
+                    <div id="start-cards" class="cards">
+                        <button id="rotate-btn" class="btn-second">
+                            Rotate
+                        </button>
+                        <button id="transpose-btn" class="btn-second">
+                            Transpose
+                        </button>
+                        <button id="shuffle-btn" class="btn-second">
+                            Shuffle
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <hr />
 
-        <div id="area-2" class="main-content">
-            <p id="me1" style="grid-area: a">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
-                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
-                necessitatibus harum impedit, repudiandae sit corrupti?
-            </p>
-            <p id="me2" style="grid-area: b">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
-                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
-                necessitatibus harum impedit, repudiandae sit corrupti?
-            </p>
-            <p id="me3" style="grid-area: c">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
-                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
-                necessitatibus harum impedit, repudiandae sit corrupti?
-            </p>
+        <div id="area-2" class="main-content grid-layout-1">
+            <div class="title-content-md" style="grid-area: h">
+                <div class="title">
+                    But let us never forget those who journeyed into the howling
+                    dark
+                </div>
+                <div class="description">and did not return.</div>
+            </div>
+            <div
+                id="me1"
+                style="grid-area: a"
+                class="content-cell content-cell-font"
+            >
+                <div class="title">Stuff</div>
+                <div class="content">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Quo rerum delectus possimus. Blanditiis quasi, saepe dolores
+                    similique iure voluptatem veniam ducimus facere, distinctio
+                    officia explicabo. Pariatur veritatis voluptate earum
+                    impedit!
+                </div>
+                <div class="description">hey!</div>
+            </div>
+
+            <div
+                class="content-cell content-cell-font"
+                id="me2"
+                style="grid-area: b"
+            >
+                <div class="title"></div>
+                <div class="content">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Suscipit officiis iure laboriosam deleniti cupiditate
+                    pariatur quisquam culpa voluptas beatae in, temporibus
+                    corrupti, rem distinctio quod illo neque obcaecati aliquam
+                    tempore.
+                </div>
+                <div class="description">1. this is some more info</div>
+            </div>
+
+            <div id="me3" style="grid-area: c" class="content-cell">
+                <div class="title">Here's some code, too.</div>
+
+                <pre class="content prettyprint">
+                        auto
+                        make_genes(std::vector<erate_t>& erate_data, int bucket_count)
+                        -> std::vector<std::tuple<int, int>>
+                        {
+                            std::vector<std::tuple<int, int>> genes;
+                            genes.reserve(erate_data.size());
+            
+                            for (auto d : erate_data) {
+                                std::tuple<int, int> tup;
+                                if (d.no_mutate) {
+                                    tup = std::make_tuple(d.no_mutate, d.bucket);
+                                } else {
+                                    tup = std::make_tuple(0, 0);
+                                }
+                                genes.push_back(tup);
+                            }
+                            return genes;
+                        }
+                </pre>
+            </div>
+
             <div class="side-right" style="grid-area: pa">
                 <image src="./anim/legendre.jpg" class="image floating">
                 </image>
@@ -162,26 +235,62 @@
 
         <hr />
 
-        <div id="area-3" class="main-content">
-            <p id="me11" style="grid-area: a">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
-                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
-                necessitatibus harum impedit, repudiandae sit corrupti?
-            </p>
-            <p id="me22" style="grid-area: b">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
-                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
-                necessitatibus harum impedit, repudiandae sit corrupti?
-            </p>
-            <p id="me33" style="grid-area: c">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Temporibus officiis voluptatum dolor optio quaerat suscipit, rem
-                sed? Veritatis ut aperiam repellat fugit eligendi accusamus
-                necessitatibus harum impedit, repudiandae sit corrupti?
-            </p>
-            <div class="distribute-cards-container">
+        <div id="area-3" class="main-content grid-layout-1">
+            <div class="title-content-md" style="grid-area: h">
+                <div class="title">
+                    For their decision required courage beyond measure;
+                </div>
+                <div class="description">
+                    sacrifice, and unshakable conviction that their fight... our
+                    fight, was elsewhere.
+                </div>
+            </div>
+            <div
+                id="me11"
+                style="grid-area: a"
+                class="content-cell content-cell-font"
+            >
+                <div class="title">Stuff</div>
+                <div class="content">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Suscipit officiis iure laboriosam deleniti cupiditate
+                    pariatur quisquam culpa voluptas beatae in, temporibus
+                    corrupti, rem distinctio quod illo neque obcaecati aliquam
+                    tempore.
+                </div>
+                <div class="description">1. this is some more info</div>
+            </div>
+            <div
+                id="me22"
+                style="grid-area: b"
+                class="content-cell content-cell-font"
+            >
+                <div class="title"></div>
+                <div class="content">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Suscipit officiis iure laboriosam deleniti cupiditate
+                    pariatur quisquam culpa voluptas beatae in, temporibus
+                    corrupti, rem distinctio quod illo neque obcaecati aliquam
+                    tempore.
+                </div>
+                <div class="description">1. this is some more info</div>
+            </div>
+            <div
+                id="me33"
+                style="grid-area: c"
+                class="content-cell content-cell-font"
+            >
+                <div class="title"></div>
+                <div class="content">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Suscipit officiis iure laboriosam deleniti cupiditate
+                    pariatur quisquam culpa voluptas beatae in, temporibus
+                    corrupti, rem distinctio quod illo neque obcaecati aliquam
+                    tempore.
+                </div>
+                <div class="description">1. this is some more info</div>
+            </div>
+            <div class="distribute-cards-container" style="grid-area: pa">
                 <div id="fun-cards-container" class="distribute-cards">
                     <div class="origin">
                         <button class="btn-prime" id="fun-btn">
@@ -189,20 +298,100 @@
                         </button>
                     </div>
                     <div id="fun-cards" class="cards">
-                        <button id="rotate-btn" class="btn-second">
-                            1Rotate
+                        <image src="./anim/fourier.jpg"> </image>
+                        <button class="btn-second">
+                            Transpose
                         </button>
-                        <button id="transpose-btn" class="btn-second">
-                            2Transpose
+                        <button class="btn-second">
+                            Transpose
                         </button>
-                        <button id="shuffle-btn" class="btn-second">
-                            3Shuffle
+                        <button class="btn-second">
+                            Transpose
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <hr />
+
+        <div id="area-4" class="main-content grid-layout-2">
+            <div class="title-content-md" style="grid-area: h">
+                <div class="title">
+                    As we start to rebuild,
+                </div>
+                <div class="description">
+                    this hillside will remain barren, a memorial to heroes
+                    fallen.
+                </div>
+            </div>
+            <div class="content-cell" style="grid-area: a; height: 40rem;">
+                <div class="title">
+                    Some spreadsheet stuff here.
+                </div>
+                <div class="content" style="height: 75%">
+                    <iframe
+                        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSV7ViF98i5-LTj3Vr8zU0Y2e7aMYlL0xhehpUfrWW1JGh25WziYVQkHhgKNBy4DYBgqTeT9WvmkNxz/pubhtml?widget=true&amp;headers=false"
+                    ></iframe>
+                </div>
+            </div>
+            <div class="content-cell" style="grid-area: b; height: 40rem;">
+                <div class="title">
+                    More, too!
+                </div>
+                <div class="content" style="height: 75%">
+                    <iframe
+                        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSV7ViF98i5-LTj3Vr8zU0Y2e7aMYlL0xhehpUfrWW1JGh25WziYVQkHhgKNBy4DYBgqTeT9WvmkNxz/pubhtml?widget=true&amp;headers=false"
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+
+    <hr/>
+        <div id="area-5" class="main-content grid-layout-4">
+                <div class="title-content-md" style="grid-area: h">
+                    <div class="title">
+                            They ennobled all of us,
+                    </div>
+                    <div class="description">
+                      and they shall not be forgotten.
+                    </div>
+                </div>
+                <div class="content-cell" style="grid-area: a;">
+                    <div class="title">
+                        Hi there!
+                    </div>
+                    <div class="content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta fuga doloremque omnis vero cumque dolorum deleniti odio eius, aut illum, laudantium, rem temporibus voluptates minus accusantium rerum a inventore? Amet?
+                    </div>
+                </div>
+                <div class="content-cell" style="grid-area: b;">
+                        <div class="title">
+                            Hi there v2!
+                        </div>
+                        <div class="content">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta fuga doloremque omnis vero cumque dolorum deleniti odio eius, aut illum, laudantium, rem temporibus voluptates minus accusantium rerum a inventore? Amet?
+                        </div>
+                    </div>
+                    <div class="content-cell" style="grid-area: c;">
+                            <div class="title">
+                                Hi there v3!
+                            </div>
+                            <div class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta fuga doloremque omnis vero cumque dolorum deleniti odio eius, aut illum, laudantium, rem temporibus voluptates minus accusantium rerum a inventore? Amet?
+                            </div>
+                        </div>
+                        <div class="content-cell" style="grid-area: d;">
+                                <div class="title">
+                                    Hi there v3!
+                                </div>
+                                <div class="content">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta fuga doloremque omnis vero cumque dolorum deleniti odio eius, aut illum, laudantium, rem temporibus voluptates minus accusantium rerum a inventore? Amet?
+                                </div>
+                            </div>
+            </div>
     </body>
+
     <script type="module" src="script.js"></script>
     <script type="module" src="anim.js"></script>
 </html>
