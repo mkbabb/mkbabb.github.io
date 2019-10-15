@@ -239,7 +239,7 @@ document.onkeydown = function(e) {
         document.getElementById("carousel").setAttribute("paused", true);
         let p =
           coords[pos].top + coords[pos].height / 2 - window.innerHeight / 2;
-        smoothScroll(window.scrollY, p, 2000, easeInBounce);
+        smoothScroll(window.scrollY, p, 3000, easeInBounce);
         pos = pos == maxPos ? 0 : pos + 1;
         document.getElementById("carousel").setAttribute("paused", false);
     }
