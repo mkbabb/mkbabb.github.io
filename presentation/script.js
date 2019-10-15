@@ -68,7 +68,7 @@ function rollingCarousel()
     }, 2000);
 }
 
-requestAnimationFrame(rollingCarousel);
+// requestAnimationFrame(rollingCarousel);
 
 document.getElementById("rotate-btn")
   .addEventListener("mousedown", function(event) {
@@ -236,9 +236,11 @@ let pos = 0;
 let maxPos = coords.length - 1;
 document.onkeydown = function(e) {
     if (e.keyCode == '39') {
+        document.getElementById("carousel").setAttribute("paused", true);
         let p =
           coords[pos].top + coords[pos].height / 2 - window.innerHeight / 2;
         smoothScroll(window.scrollY, p, 2000, easeInBounce);
         pos = pos == maxPos ? 0 : pos + 1;
+        document.getElementById("carousel").setAttribute("paused", false);
     }
 };
