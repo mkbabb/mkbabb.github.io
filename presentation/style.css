@@ -892,7 +892,7 @@ hr {
 .main-content .content-cell .content {
   -o-object-fit: cover;
      object-fit: cover;
-  width: 100%;
+  max-width: 100%;
   max-height: 100%;
 }
 
