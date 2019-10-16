@@ -164,7 +164,7 @@ function scrollInFunctions(init = false)
     scrollIn(dy, document.getElementById("a32"), scrollOpacity);
 
     scrollIn(dy, document.getElementById("area-3"), scrollDarken, -500, -500);
-    scrollIn(dy, document.getElementById("area-5"), scrollDarken, -1000, -1000);
+    scrollIn(dy, document.getElementById("area-5"), scrollDarken, -1500, -1500);
 
     // scrollIn(dy, document.getElementById("a50"), scrollOpacity);
     // scrollIn(dy, document.getElementById("a51"), scrollOpacity);
