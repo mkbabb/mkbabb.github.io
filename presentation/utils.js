@@ -3,6 +3,7 @@ export {
     debounce,
     distributeCards,
     easeInBounce,
+    easeInQuad,
     getOffset,
     initCarousel,
     interpColor,
@@ -637,7 +638,9 @@ function smoothScroll(from, target, duration, timingFunction = smoothStep3)
 
     var clock = new Clock();
 
-    function update()
+    function update() {}
+
+    function draw()
     {
         let v = Math.floor(
           timingFunction(clock.elapsedTicks, from, distance, duration));
@@ -647,8 +650,6 @@ function smoothScroll(from, target, duration, timingFunction = smoothStep3)
         }
         return false;
     }
-
-    function draw() {}
 
     function animationLoop()
     {
@@ -662,12 +663,12 @@ function smoothScroll(from, target, duration, timingFunction = smoothStep3)
             delta -= clock.timeStep;
             clock.tick();
 
-            force = update();
+            update();
             if (updateSteps++ >= 120) {
                 break;
             }
         }
-        draw();
+        force = draw();
         if (force || clock.elapsedTicks / duration > 1) {
             return true;
         } else {
@@ -714,7 +715,6 @@ function scrollInPreamble(elementNode, offsetMin, offsetMax, force = false)
         elementNode.setAttribute("scroll-in-max", round(max, 2));
         return true;
     }
-    console.log(elementNode);
     return false;
 }
 
@@ -736,16 +736,21 @@ function scrollIn(dy,
     let min = parseFloat(elementNode.getAttribute("scroll-in-min"));
     let max = parseFloat(elementNode.getAttribute("scroll-in-max"));
 
+    let limitingOffset = getOffset(limitingNode || document.body);
+    let tMax =
+      limitingOffset.top + limitingOffset.height - window.innerHeight / 2;
+
+    if (max >= tMax) {
+        let delta = max - tMax;
+        min -= delta;
+        max = tMax;
+    }
+
     if (dy <= min) {
         requestAnimationFrame(
           function() { scrollFunc(elementNode, 0, dy, min, max); });
         return true;
     } else {
-        let limitingOffset = getOffset(limitingNode || document.body);
-        let tMax =
-          limitingOffset.top + limitingOffset.height - window.innerHeight / 2;
-
-        max = max >= tMax ? tMax : max;
 
         let v = (dy >= min) ? (clamp(dy, min, max) - min) / (max - min) : 0;
 

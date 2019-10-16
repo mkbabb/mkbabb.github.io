@@ -3,6 +3,7 @@ import {
     debounce,
     distributeCards,
     easeInBounce,
+    easeInQuad,
     getOffset,
     initCarousel,
     listElementsCoords,
@@ -63,10 +64,10 @@ function rollingCarousel()
             rollCarousel(carousel);
         }
         requestAnimationFrame(rollingCarousel);
-    }, 2000);
+    }, 5000);
 }
 
-// requestAnimationFrame(rollingCarousel);
+requestAnimationFrame(rollingCarousel);
 
 document.getElementById("rotate-btn")
   .addEventListener("mousedown", function(event) {
@@ -132,7 +133,7 @@ function scrollOpacity(el, v, dy, min, max)
     if (dy == -1 || dy >= min && dy <= max * 1.2) {
         v = round(v, 1, 2);
         el.style.opacity = v;
-        el.style.transform = `translateY(${20 * v}px)`;
+        el.style.transform = `translateY(${10 * v}px)`;
     } else {
         el.style.opacity = v;
     }
@@ -223,12 +224,11 @@ let coords = listElementsCoords([
 let pos = 0;
 let maxPos = coords.length - 1;
 document.onkeydown = function(e) {
-    if (e.keyCode == '39') {
+    if (e.keyCode == '13') {
         document.getElementById("carousel").setAttribute("paused", true);
         let p =
           coords[pos].top + coords[pos].height / 2 - window.innerHeight / 2;
-        smoothScroll(window.scrollY, p, 3000, easeInBounce);
+        smoothScroll(window.scrollY, p, 2000, easeInBounce);
         pos = pos == maxPos ? 0 : pos + 1;
-        document.getElementById("carousel").setAttribute("paused", false);
     }
 };
