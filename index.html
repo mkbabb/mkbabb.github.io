@@ -10,6 +10,25 @@
             type="text/css"
             href="https://cdn.rawgit.com/dreampulse/computer-modern-web-font/master/fonts.css"
         />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="./favicon_io/apple-touch-icon.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="./favicon_io/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="./favicon_io/favicon-16x16.png"
+        />
+        <link rel="manifest" href="./favicon_io/site.webmanifest" />
+
         <link rel="stylesheet" href="presentation/style.css" />
         <link
             rel="stylesheet"
@@ -104,55 +123,77 @@
 
         <div class="main-content grid-layout-3">
             <div id="main-title" class="title-content-lg" style="grid-area: h">
-                <div class="title">For us, the storm has passed.</div>
-                <div class="description">The war is over.</div>
+                <div class="title">What we've been doing.</div>
+                <div class="description">And how we've been doing it.</div>
             </div>
             <div id="area-1" class="scene" style="grid-area: b;">
                 <div class="carousel" id="carousel">
+                    <div class="carousel-cell align-center">
+                        <div class="title">Plotting the Trend.</div>
+                        <iframe
+                            width="539"
+                            height="333"
+                            seamless
+                            frameborder="0"
+                            scrolling="no"
+                            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRscjathmGlaR2fFeqFGYdVb2pL9IyPM7pThseTUQ4B-sWCQ8H9Z3OJgB8SwemTVeE7hYX4godANY7f/pubchart?oid=1964378713&amp;format=image"
+                            style="height: 30rem; width: 30rem"
+                        ></iframe>
+                        <div class="description">
+                            Graph of ~1000 iterations of our algorithm.
+                        </div>
+                    </div>
+
+                    <div class="carousel-cell">
+                        <div class="title">
+                            Interesting results and major savings. $500,000
+                            worth.
+                        </div>
+                        <p>
+                            The good stuff first: using a set of algorithms
+                            we've developed, we've found a greater E-Rate
+                            optimum than was found in years past. Moreover, this
+                            optimum can be found in a matter of seconds.
+                        </p>
+                    </div>
+                    <div class="carousel-cell">
+                        <div class="title">Teacher Working Conditions</div>
+                        <p>
+                            Using a sample size of 100,000 teachers from across
+                            all of NC, we've identified a few key areas of both
+                            concern and interest within our scope of digital
+                            learning and the network architecture thereof.
+                        </p>
+
+                        <div class="description"></div>
+                    </div>
                     <div class="carousel-cell" id="main-cell">
-                        <div class="title">Content1</div>
-                        <p>
-                            Insert content here!
-                        </p>
-                        <br />
-                    </div>
-                    <div class="carousel-cell">
-                        <div class="title">Content2</div>
-                        <p>
-                            Insert content here!
-                        </p>
-                        <br />
-                    </div>
-                    <div class="carousel-cell">
-                        <div class="title">ImageContent</div>
-                        <image
-                            src="./presentation/anim/iu-2.jpeg"
-                            class="image"
-                        >
-                        </image>
+                        <div class="title">Our Random Number Generator.</div>
+                        <iframe
+                            width="871"
+                            height="539"
+                            seamless
+                            frameborder="0"
+                            scrolling="no"
+                            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRscjathmGlaR2fFeqFGYdVb2pL9IyPM7pThseTUQ4B-sWCQ8H9Z3OJgB8SwemTVeE7hYX4godANY7f/pubchart?oid=1033646926&amp;format=image"
+                        ></iframe>
                         <div class="description">
-                            This is a picture!
+                            10,000 random pairs of numbers sampled within a
+                            bounded range.
                         </div>
                     </div>
                     <div class="carousel-cell">
-                        <div class="title">ImageContent</div>
-                        <video
-                            src="./presentation/anim/cauchy_circles.mp4"
-                            class="image"
-                        ></video>
-                        <div class="description">
-                            This is a video!
+                        <div class="title">
+                            Further Analysis and Observation
                         </div>
-                    </div>
-                    <div class="carousel-cell">
-                        <div class="title">ImageContent</div>
                         <image
                             src="./presentation/anim/utilization-map.jpg"
                             class="image"
                         >
                         </image>
                         <div class="description">
-                            This is a picture!
+                            A small look into what we're also working on:
+                            utilization using the latest provider data.
                         </div>
                     </div>
                 </div>
@@ -189,92 +230,85 @@
         <div id="area-2" class="main-content grid-layout-1">
             <div class="title-content-md" style="grid-area: h">
                 <div class="title">
-                    But let us never forget those who journeyed into the howling
-                    dark
+                    The two problems. At a glance.
                 </div>
-                <div class="description">and did not return.</div>
+                <div class="description">less is more.</div>
             </div>
             <div
-                id="me1"
+                id="a20"
                 style="grid-area: a"
                 class="content-cell content-cell-font"
             >
-                <div class="title">Stuff</div>
+                <div class="title">E-Rate optimization</div>
                 <div class="content">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Quo rerum delectus possimus. Blanditiis quasi, saepe dolores
-                    similique iure voluptatem veniam ducimus facere, distinctio
-                    officia explicabo. Pariatur veritatis voluptate earum
-                    impedit!
+                    A variant of a prototypical <em>knapsack</em> problem [1]:
+                    given an arbitrary knapsack that can hold
+                    <strong>N</strong> units of items, what is the largest
+                    number of items, a<sub>0</sub>, a<sub>1</sub> ...
+                    a<sub>n</sub>, weighing each w<sub>0</sub>, w<sub>1</sub>
+                    ... w<sub>n</sub>, one can fit into said knapsack not
+                    exceeding
+                    <strong>N</strong> units. Our problem: given n buckets (in
+                    our case three for 2019), what schools should be placed into
+                    said buckets such that the total discount is maximized. An
+                    effective algorithm was developed to solve just this
+                    problem. More work to follow.
                 </div>
-                <div class="description">hey!</div>
+                <div class="description">
+                    1. Although similar in concept, is wildly different in
+                    application.
+                </div>
             </div>
 
             <div
                 class="content-cell content-cell-font"
-                id="me2"
+                id="a21"
                 style="grid-area: b"
             >
-                <div class="title"></div>
+                <div class="title">Teacher Working Conditions</div>
                 <div class="content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Suscipit officiis iure laboriosam deleniti cupiditate
-                    pariatur quisquam culpa voluptas beatae in, temporibus
-                    corrupti, rem distinctio quod illo neque obcaecati aliquam
-                    tempore.
+                    Using a multifarious set of statistical techniques, we're
+                    looking for trends in the set of
+                    <strong>Teacher Working Conditions</strong> data. Techniques
+                    such as: multinomial logistic and linear regression [1],
+                    correlation and standard deviation of both the original data
+                    set and its transposed variant, and more. The preliminary
+                    results demonstrate a few key areas of further on-the-ground
+                    research to be done.
                 </div>
-                <div class="description">1. this is some more info</div>
+                <div class="description">
+                    1. Essentially 'machine learning'.
+                </div>
             </div>
 
-            <div id="me3" style="grid-area: c" class="content-cell">
-                <div class="title">Here's some code, too.</div>
-                <pre class="content prettyprint">
-                        auto
-                        make_genes(std::vector<erate_t>& erate_data, int bucket_count)
-                        -> std::vector<std::tuple<int, int>>
-                        {
-                            std::vector<std::tuple<int, int>> genes;
-                            genes.reserve(erate_data.size());
-            
-                            for (auto d : erate_data) {
-                                std::tuple<int, int> tup;
-                                if (d.no_mutate) {
-                                    tup = std::make_tuple(d.no_mutate, d.bucket);
-                                } else {
-                                    tup = std::make_tuple(0, 0);
-                                }
-                                genes.push_back(tup);
-                            }
-                            return genes;
-                        }
-                </pre>
+            <div
+                id="a22"
+                style="grid-area: c"
+                class="content-cell content-cell-font"
+            >
+                <div class="title">The procedure</div>
+                <div class="content">
+                    Utilize and develop algorithms to more effectively and
+                    rapidly analyze or solve large scale, data focused,
+                    problems. Each of the above problem sets were analyzed doing
+                    just that. We strive for data-driven solutions that are not
+                    only theoretically valid, but applicable in the real world,
+                    too.
+                </div>
             </div>
 
-            <div class="side-right" style="grid-area: pa">
-                <image
-                    src="./presentation/anim/legendre.jpg"
-                    class="image floating"
-                >
-                </image>
-                <div class="description">Legendre</div>
-            </div>
+            <div class="content-cell align-center" style="grid-area: pb">
+                <div class="content">
+                    <image
+                        src="presentation/anim/iu-4.jpeg"
+                        class="image floating"
+                    >
+                    </image>
+                </div>
 
-            <div class="side-right" style="grid-area: pb">
-                <image
-                    src="./presentation/anim/fourier.jpg"
-                    class="image floating"
-                >
-                </image>
-                <div class="description">Fourier</div>
-            </div>
-
-            <div class="side-right" style="grid-area: pc">
-                <image
-                    src="./presentation/anim/iu-1.png"
-                    class="image floating"
-                >
-                </image>
-                <div class="description">Test</div>
+                <div class="description">
+                    "You are here."
+                </div>
             </div>
         </div>
 
@@ -283,77 +317,138 @@
         <div id="area-3" class="main-content grid-layout-1">
             <div class="title-content-md" style="grid-area: h">
                 <div class="title">
-                    For their decision required courage beyond measure;
+                    E-Rate Savings and How.
                 </div>
                 <div class="description">
-                    sacrifice, and unshakable conviction that their fight... our
-                    fight, was elsewhere.
+                    genetic what?
                 </div>
             </div>
             <div
-                id="me11"
+                id="a30"
                 style="grid-area: a"
                 class="content-cell content-cell-font"
             >
-                <div class="title">Stuff</div>
+                <div class="title">The algorithm</div>
                 <div class="content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Suscipit officiis iure laboriosam deleniti cupiditate
-                    pariatur quisquam culpa voluptas beatae in, temporibus
-                    corrupti, rem distinctio quod illo neque obcaecati aliquam
-                    tempore.
+                    The overarching algorithm is Monte Carlo based, employing a
+                    genetic variation within. Concretely, it may described as
+                    thus: randomly select a set of schools, place them in a
+                    bucket, and look at the cost savings. The backbone of the
+                    method is dependent of and architectured upon the concept of
+                    <em>randomness</em>, or at least pseudo-randomness. The
+                    random number generator heretofore used is based off of the
+                    latest innovations in, well, random number generators [1].
                 </div>
-                <div class="description">1. this is some more info</div>
+                <div class="description">
+                    <ol>
+                        <li>
+                            Said research can be found
+                            <a href="http://www.pcg-random.org/paper.html"
+                                >here</a
+                            >. Thanks, Melissa!
+                        </li>
+                    </ol>
+                </div>
             </div>
             <div
-                id="me22"
+                id="a31"
                 style="grid-area: b"
                 class="content-cell content-cell-font"
             >
-                <div class="title"></div>
+                <div class="title">Delineation</div>
                 <div class="content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Suscipit officiis iure laboriosam deleniti cupiditate
-                    pariatur quisquam culpa voluptas beatae in, temporibus
-                    corrupti, rem distinctio quod illo neque obcaecati aliquam
-                    tempore.
+                    We endearingly denote each batch of all ~250 schools as a
+                    'critter': with each having an associated fitness measure,
+                    or cost savings. A set of critters is randomly spawned
+                    forth; set to compete with each other. At then end of a
+                    critter's life, its fitness measure is thereupon analyzed,
+                    and used to determine the 'mating' procedure. The 'genes'
+                    from each critter are then interlarded within another set of
+                    randomly generated 'children', thus beginning another life;
+                    the circle of life.
+
+                    <br />
+                    <br />
+                    In our instance, the fitness measure is the total cost
+                    savings, and each gene is an individual school with its
+                    corresponding bucket tag [1].
                 </div>
-                <div class="description">1. this is some more info</div>
+                <div class="description">
+                    <ol>
+                        <li>1, 2, 3 ... up to bucket count.</li>
+                    </ol>
+                </div>
             </div>
             <div
-                id="me33"
+                id="a32"
                 style="grid-area: c"
                 class="content-cell content-cell-font"
             >
-                <div class="title"></div>
+                <div class="title">The results. Expanded.</div>
                 <div class="content">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Suscipit officiis iure laboriosam deleniti cupiditate
-                    pariatur quisquam culpa voluptas beatae in, temporibus
-                    corrupti, rem distinctio quod illo neque obcaecati aliquam
-                    tempore.
+                    The hereinbefore mentioned $500,000 savings: how and what?
+                    Utilizing the above heuristics, we were able to initialize a
+                    series of test runs, each spawned forth with varying
+                    'hyper-parameters' [1] and running for several hours. The
+                    results speak for themselves: with 3 buckets we reached a
+                    cost savings of over $400,000 in a few hours. With four, a
+                    cost savings of over $500,000 in a day [2]. The
+                    implementation process is decidedly straight forward: put
+                    the set of schools output by the program into the
+                    pre-stipulated buckets. Done. The paper-work on the other
+                    hand... [3]
                 </div>
-                <div class="description">1. this is some more info</div>
+                <div class="description">
+                    <ol>
+                        <li>
+                            Such as bucket size, which is currently at 3 for the
+                            2019 E-Rate
+                        </li>
+                        <li>
+                            Note these results are preliminary and un-optimized.
+                        </li>
+                        <li>Not in our domain!</li>
+                    </ol>
+                </div>
             </div>
-            <div class="distribute-cards-container" style="grid-area: pa">
-                <div id="fun-cards-container" class="distribute-cards">
-                    <div class="origin">
-                        <button class="btn-prime" id="fun-btn">
-                            Click me!
-                        </button>
-                    </div>
-                    <div id="fun-cards" class="cards">
-                        <image src="./presentation/anim/fourier.jpg"> </image>
-                        <button class="btn-second">
-                            Transpose
-                        </button>
-                        <button class="btn-second">
-                            Transpose
-                        </button>
-                        <button class="btn-second">
-                            Transpose
-                        </button>
-                    </div>
+
+            <div class="content-cell align-center" style="grid-area: pa">
+                <div class="content">
+                    <image
+                        src="presentation/anim/monte-carlo-car.jpg"
+                        class="image floating"
+                    >
+                    </image>
+                </div>
+
+                <div class="description">Not that kind of Monte Carlo.</div>
+            </div>
+
+            <div class="content-cell align-center" style="grid-area: pb">
+                <div class="content">
+                    <image
+                        src="presentation/anim/iu.gif"
+                        class="image floating"
+                    >
+                    </image>
+                </div>
+
+                <div class="description">
+                    Diagram of a prototypical genetic algorithm.
+                </div>
+            </div>
+
+            <div class="content-cell align-center" style="grid-area: pc">
+                <div class="content">
+                    <image
+                        src="./presentation/anim/iu-1.png"
+                        class="image floating"
+                    >
+                    </image>
+                </div>
+                <div class="description">
+                    Visualization of gradient descent. Tangentially related,
+                    more on this in the future.
                 </div>
             </div>
         </div>
@@ -363,38 +458,23 @@
         <div id="area-4" class="main-content grid-layout-2">
             <div class="title-content-md" style="grid-area: h">
                 <div class="title">
-                    As we start to rebuild,
+                    A quick glimpse.
                 </div>
                 <div class="description">
-                    this hillside will remain barren, a memorial to heroes
-                    fallen.
+                    Something we're also looking into.
                 </div>
             </div>
             <div
-                id="me40"
+                id="a40"
                 class="content-cell"
                 style="grid-area: a; height: 40rem;"
             >
                 <div class="title">
-                    Some spreadsheet stuff here.
+                    Anonymized fiber mappings of Rowan county.
                 </div>
                 <div class="content" style="height: 75%">
                     <iframe
-                        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSV7ViF98i5-LTj3Vr8zU0Y2e7aMYlL0xhehpUfrWW1JGh25WziYVQkHhgKNBy4DYBgqTeT9WvmkNxz/pubhtml?widget=true&amp;headers=false"
-                    ></iframe>
-                </div>
-            </div>
-            <div
-                id="me41"
-                class="content-cell"
-                style="grid-area: b; height: 40rem;"
-            >
-                <div class="title">
-                    More, too!
-                </div>
-                <div class="content" style="height: 75%">
-                    <iframe
-                        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSV7ViF98i5-LTj3Vr8zU0Y2e7aMYlL0xhehpUfrWW1JGh25WziYVQkHhgKNBy4DYBgqTeT9WvmkNxz/pubhtml?widget=true&amp;headers=false"
+                        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vR3pqtKX-_NqbgcsMGb3WpTkOEWunmKoMUJ7_vyMiftB0dkBDAZ_H6YSd_iXLQqYx4BeuHA3j7F18-I/pubhtml?gid=1447323683&amp;single=true&amp;widget=true&amp;headers=false"
                     ></iframe>
                 </div>
             </div>
@@ -404,99 +484,295 @@
         <div id="area-5" class="main-content grid-layout-4">
             <div class="title-content-md" style="grid-area: h">
                 <div class="title">
-                    They ennobled all of us,
+                    Statistical Analysis In Regards To:
                 </div>
                 <div class="description">
-                    and they shall not be forgotten.
+                    <strong>Teacher Working Conditions Data.</strong>
                 </div>
             </div>
             <div
-                id="me50"
+                id="a50"
                 class="content-cell content-cell-font"
                 style="grid-area: a;"
             >
                 <div class="title">
-                    Hi there!
+                    The data.
                 </div>
                 <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Soluta fuga doloremque omnis vero cumque dolorum deleniti
-                    odio eius, aut illum, laudantium, rem temporibus voluptates
-                    minus accusantium rerum a inventore? Amet?
+                    That data is comprised of a set of thereabouts 100,000
+                    unique teacher responses to a
+                    <em>working conditions</em> survey, done bi-annually.
+                    Questions such as:
+
+                    <blockquote>
+                        <em>
+                            Do you feel as though you incorporate a sufficient
+                            amount of technology into the classrom?</em
+                        >
+                    </blockquote>
+
+                    Or:
+
+                    <blockquote>
+                        <em>
+                            Do you feel as though you are provided adequate
+                            space to work productively?</em
+                        >
+                    </blockquote>
+
+                    And so forth. From over 60 of such questions, we distilled
+                    them down to a total of 14 of absolute relevancy [1]:
+                    <ol>
+                        <li>stu-success</li>
+                        <li>clean</li>
+                        <li>instr-tech</li>
+                        <li>rel-internet</li>
+                        <li>dig-cont</li>
+                        <li>dig-instruct</li>
+                        <li>req-device</li>
+                        <li>req-internet</li>
+                        <li>overall</li>
+                        <li>had-in-tech</li>
+                        <li>need-in-tech</li>
+                        <li>suff-train</li>
+                        <li>stu-follow</li>
+                        <li>meet-needs</li>
+                    </ol>
                 </div>
                 <div class="description">
-                    1. this can and will be used against you
+                    <ol>
+                        <li>To our areas of expertise!</li>
+                    </ol>
                 </div>
             </div>
             <div
-                id="me51"
+                id="a51"
                 class="content-cell content-cell-font"
                 style="grid-area: b;"
             >
                 <div class="title">
-                    Hi there v2!
+                    The Analysis.
                 </div>
                 <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Soluta fuga doloremque omnis vero cumque dolorum deleniti
-                    odio eius, aut illum, laudantium, rem temporibus voluptates
-                    minus accusantium rerum a inventore? Amet?
+                    What did we do with it? It's an ongoing process, but the
+                    hitherto implemented analyses are: correlations of each
+                    column of desideratum within the data set, as well as
+                    granular analysis of several pertinent questions, such as
+                    reliable internet, cleanliness and overall satisfaction.
+
+                    <br />
+                    <br />
+                    Some insights gathered: as a sanity check, some of the
+                    working conditions columns quite intuitively correlate with
+                    others: for example, there's a high correlation value
+                    between the questions of requiring internet usage for
+                    homework and requiring an internet enabled device for
+                    homework (triviality notwithstanding, this is useful!). [1]
+
+                    <br />
+                    <br />Utilizing the state valid file from 2018, we've
+                    discovered certain extremal values in regards to one
+                    particular question and corresponding SVF attribute:
+                    reliable internet rating and CAT2 budget remaining. Not
+                    surprisingly, the results are varied with an almost 0
+                    correlation value [2].
+
+                    <br />
+                    <br />
+
+                    We're currently in the process of running a custom
+                    multinomial logistic regressive analysis across all
+                    aforesaid columns: stay tuned!
                 </div>
                 <div class="description">
-                    1. this can and will be used against you
+                    <ol>
+                        <li>Shown in the graph below and to the right.</li>
+                        <li>Shown in the graph below and to the left.</li>
+                    </ol>
                 </div>
             </div>
 
             <div
-                id="me52"
+                id="a52"
                 class="content-cell content-cell-font"
                 style="grid-area: c;"
             >
                 <div class="title">
-                    Hi there v3!
+                    There's more work to be done.
                 </div>
                 <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Soluta fuga doloremque omnis vero cumque dolorum deleniti
-                    odio eius, aut illum, laudantium, rem temporibus voluptates
-                    minus accusantium rerum a inventore? Amet?
+                    The analysis phase is still incomplete, with the logistic
+                    regressive portion set to begin in a few days. Whereupon,
+                    further introspection of the data will be done; there are
+                    enumerably many facets whereof one may look upon such an
+                    exhaustive data set.
+                </div>
+                <div class="description"></div>
+            </div>
+            <div
+                id="a53"
+                class="content-cell align-center content-cell-font"
+                style="grid-area: i"
+            >
+                <div class="content">
+                    <iframe
+                        width="539"
+                        height="333"
+                        seamless
+                        frameborder="0"
+                        scrolling="no"
+                        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRscjathmGlaR2fFeqFGYdVb2pL9IyPM7pThseTUQ4B-sWCQ8H9Z3OJgB8SwemTVeE7hYX4godANY7f/pubchart?oid=2004066141&amp;format=image"
+                        style="height: 25rem; width: 40rem;"
+                    ></iframe>
                 </div>
                 <div class="description">
-                    1. this can and will be used against you
+                    Source: TWC data joined with the 2018 SVF, disagree ratio
+                    regarding the
+                    <strong>NC16_frl021relinternet</strong> attribute
+                </div>
+            </div>
+
+            <div
+                id="a54"
+                class="content-cell align-center content-cell-font"
+                style="grid-area: j"
+            >
+                <div style="height: 100%; width: 100%;">
+                    <iframe
+                        width="1164.5147705078125"
+                        height="719.9204171009641"
+                        seamless
+                        frameborder="0"
+                        scrolling="no"
+                        src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRscjathmGlaR2fFeqFGYdVb2pL9IyPM7pThseTUQ4B-sWCQ8H9Z3OJgB8SwemTVeE7hYX4godANY7f/pubchart?oid=1685921803&amp;format=image"
+                    ></iframe>
+                </div>
+                <div class="description">
+                    Correlations across all columns of desideratum.
                 </div>
             </div>
             <div
-                id="me53"
+                id="a55"
+                class="content-cell align-center content-cell-font"
+                style="grid-area: k"
+            >
+                <div style="background-color: white; width: 25rem">
+                    <image
+                        src="presentation/anim/sdlawofcos.png"
+                        class="content image"
+                    >
+                    </image>
+                </div>
+                <br />
+                <br />
+                <div class="content">
+                    Demonstrating that the standard deviation of some arbitrary
+                    variable(s) forms a complete inner product within
+                    <strong>L<sup>2</sup></strong> Hilbert space. Correlation is
+                    then a measure of similarity 'twixt two vectors of data.
+                    Thanks to John Cook for the
+                    <a
+                        href="https://www.johndcook.com/blog/2010/06/17/covariance-and-law-of-cosines/"
+                        >image!</a
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div id="area-6" class="main-content grid-layout-5">
+            <div class="title-content-md" style="grid-area: h">
+                <div class="title">
+                    Some hopes and dreams.
+                </div>
+                <div class="description">Into the future.</div>
+            </div>
+            <div
+                id="a60"
                 class="content-cell content-cell-font"
-                style="grid-area: d;"
+                style="grid-area: a;"
             >
                 <div class="title">
-                    Hi there v3!
+                    FPGA's and You.
                 </div>
                 <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Soluta fuga doloremque omnis vero cumque dolorum deleniti
-                    odio eius, aut illum, laudantium, rem temporibus voluptates
-                    minus accusantium rerum a inventore? Amet?
+                    Regarding the E-Rate optimization, if we were to utilize
+                    custom hardware via an FPGA [1], we could potentially
+                    increase the calculation rate by multiple orders of
+                    magnitude.
+
+                    <br />
+                    <br />
+
+                    The realm of the FPGA is wide, vast and sometimes both
+                    abstruse and arcane: if we were to invest the time, we could
+                    potentially accomplish two tasks: increase the efficiency
+                    and pace whereby our E-Rate algorithm runs, and also
+                    disambiguate and promulgate forth the knowledge learned
+                    along the way. Our goal: create a series of introductory
+                    materials regarding FPGAs; how and when to use then, and so
+                    forth.
                 </div>
                 <div class="description">
-                    1. this can and will be used against you
+                    <ol>
+                        <li>Field programmable gate array</li>
+                    </ol>
                 </div>
-            </div>
-            <div class="content-cell align-center" style="grid-area: i">
-                <div class="content">
-                    <image src="./presentation/anim/gauss.jpg" class="image">
-                    </image>
-                </div>
-                <div class="description">A man</div>
             </div>
 
-            <div class="content-cell align-center" style="grid-area: j">
+            <div
+                id="a61"
+                class="content-cell content-cell-font"
+                style="grid-area: c;"
+            >
+                <div class="title">
+                    More Math for More People.
+                </div>
                 <div class="content">
-                    <image src="./presentation/anim/dog.jpg" class="image">
+                    We're a team of engineers: we all like math. Some of us more
+                    in particular (me). We'd like to make the subject more
+                    interesting and tenable, whilst also exposing its absolute
+                    and consummate relevancy. How? Via a book or series of small
+                    digestible articles iterating upon a set of
+                    <strong>real world</strong> math problems; how they're both
+                    approached and solved with math along with a concomitant
+                    aspect of programming.
+
+                    <br />
+                    <br />
+                    A neat example of this: the above is the Fourier Series
+                    representation of a 2-d set of binary values (also known as
+                    a picture...). All done with math and visually interesting
+                    to look over. Another neat example: this website whereby you
+                    view this content: many sections were very math heavy on the
+                    programming side, particularly in regards to the graphical
+                    aspect hereof. Math's important, and moreover, cool: we'd
+                    like to show this to people from all walks of life.
+                </div>
+            </div>
+
+            <div class="content-cell align-center" style="grid-area: pa">
+                <div class="content">
+                    <image
+                        src="presentation/anim/iu-3.jpeg"
+                        class="image floating"
+                    >
                     </image>
                 </div>
-                <div class="description">A dog</div>
+
+                <div class="description">A simple FPGA</div>
+            </div>
+
+            <div class="content-cell align-center" style="grid-area: b">
+                <div class="content">
+                    <video
+                        src="presentation/anim/cauchy_circles.mp4"
+                        controls
+                        style="width: 60rem; height: 60rem; padding: 0; margin: 0;"
+                    ></video>
+                    <div class="description">
+                        Cauchy drawn via Fourier Epicycles.
+                    </div>
+                </div>
             </div>
         </div>
     </body>

@@ -235,20 +235,7 @@ function affixer(preAffixFunc, postAffixFunc)
         wrap(el, wrapped);
     });
 
-    window.addEventListener("resize", function(el) {
-        document.querySelectorAll(".affix").forEach((el, n) => {
-            let offset = getOffset(el);
-            offsets[n] = offset;
-            el.style.top = `${- offsets[n].top}px`;
-            el.style.width = `${window.innerWidth - offsets[n].left}px`;
-
-            let wrapped = el.parentNode;
-
-            wrapped.style.width =
-              `${window.innerWidth - 2 * offsets[n].left}px`;
-            wrapped.style.top = `${- offsets[n].top}px`;
-        });
-    });
+    window.addEventListener("resize", function(e) { scrollAffix(); });
 
     window.addEventListener("scroll", scrollAffix);
     function scrollAffix()

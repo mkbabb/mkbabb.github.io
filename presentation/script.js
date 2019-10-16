@@ -5,12 +5,10 @@ import {
     easeInBounce,
     getOffset,
     initCarousel,
-    lerp,
     listElementsCoords,
     rollCarousel,
     round,
     scrollIn,
-    scrollInPreamble,
     shuffleCarousel,
     sleep,
     slideToggle,
@@ -26,7 +24,7 @@ import {
 
 let carousel = document.getElementById("carousel");
 initCarousel(carousel);
-shuffleCarousel(carousel, 3);
+shuffleCarousel(carousel, 1);
 
 document.getElementById("start-btn").addEventListener("click", function(event) {
     let origin = document.getElementById("start-cards-container");
@@ -87,24 +85,6 @@ document.getElementById("shuffle-btn")
       let carousel = document.getElementById("carousel");
       shuffleCarousel(carousel, 3);
   });
-
-document.getElementById("fun-btn").addEventListener("click", function(event) {
-    let origin = document.getElementById("fun-cards-container");
-    let cards = document.getElementById("fun-cards");
-
-    let columns = 1;
-    let delay = 50;
-    let sx = 25;
-    let sy = 10;
-
-    toggle(origin,
-           function(el) {
-               distributeCards(origin, cards, delay, sx, sy, columns, true);
-           },
-           function(el) {
-               distributeCards(origin, cards, delay, sx, sy, columns, false);
-           });
-});
 
 document.getElementById("menu-icon")
   .addEventListener("mousedown", function(event) {
@@ -175,17 +155,26 @@ function scrollInFunctions(init = false)
     let wh = window.innerHeight;
     let dy = init == true ? -1 : window.pageYOffset + window.innerHeight / 2;
 
-    scrollIn(dy, document.getElementById("me1"), scrollOpacity);
-    scrollIn(dy, document.getElementById("me2"), scrollOpacity);
-    scrollIn(dy, document.getElementById("me3"), scrollOpacity);
+    scrollIn(dy, document.getElementById("a20"), scrollOpacity);
+    scrollIn(dy, document.getElementById("a21"), scrollOpacity);
+    scrollIn(dy, document.getElementById("a22"), scrollOpacity);
 
-    scrollIn(dy, document.getElementById("me11"), scrollOpacity);
-    scrollIn(dy, document.getElementById("me22"), scrollOpacity);
-    scrollIn(dy, document.getElementById("me33"), scrollOpacity);
+    scrollIn(dy, document.getElementById("a30"), scrollOpacity);
+    scrollIn(dy, document.getElementById("a31"), scrollOpacity);
+    scrollIn(dy, document.getElementById("a32"), scrollOpacity);
 
-    scrollIn(dy, document.getElementById("area-3"), scrollDarken, -200, -200);
+    scrollIn(dy, document.getElementById("area-3"), scrollDarken, -500, -500);
+    scrollIn(dy, document.getElementById("area-5"), scrollDarken, -1000, -1000);
 
-    scrollIn(dy, document.getElementById("area-5"), scrollDarken, -200, -200);
+    // scrollIn(dy, document.getElementById("a50"), scrollOpacity);
+    // scrollIn(dy, document.getElementById("a51"), scrollOpacity);
+    // scrollIn(dy, document.getElementById("a52"), scrollOpacity);
+    // scrollIn(dy, document.getElementById("a53"), scrollOpacity);
+    // scrollIn(dy, document.getElementById("a54"), scrollOpacity);
+    scrollIn(dy, document.getElementById("a55"), scrollOpacity);
+
+    scrollIn(dy, document.getElementById("a60"), scrollOpacity);
+    scrollIn(dy, document.getElementById("a61"), scrollOpacity);
 
     scrollIn(dy,
              document.getElementById("area-4"),
@@ -217,18 +206,17 @@ window.addEventListener("scroll", scrollInFunctions);
 let coords = listElementsCoords([
     document.getElementById("main-title"),
     document.getElementById("area-1"),
-    document.getElementById("me1"),
-    document.getElementById("me2"),
-    document.getElementById("me3"),
-    document.getElementById("me11"),
-    document.getElementById("me22"),
-    document.getElementById("me33"),
-    document.getElementById("me40"),
-    document.getElementById("me41"),
-    document.getElementById("me50"),
-    document.getElementById("me51"),
-    document.getElementById("me52"),
-    document.getElementById("me53"),
+    document.getElementById("a20"),
+    document.getElementById("a21"),
+    document.getElementById("a22"),
+    document.getElementById("a30"),
+    document.getElementById("a31"),
+    document.getElementById("a32"),
+    document.getElementById("a40"),
+    document.getElementById("a50"),
+    document.getElementById("a53"),
+    document.getElementById("a60"),
+    document.getElementById("a61"),
 
 ]);
 
