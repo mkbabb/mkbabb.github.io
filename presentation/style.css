@@ -879,7 +879,6 @@ hr {
   padding: 1rem;
   -webkit-transition: cubic-bezier(0.09, 0.91, 0.5, 1.1) 500ms;
   transition: cubic-bezier(0.09, 0.91, 0.5, 1.1) 500ms;
-  width: 100%;
 }
 
 .main-content .content-cell .title {
@@ -891,8 +890,10 @@ hr {
 }
 
 .main-content .content-cell .content {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
   max-height: 100%;
-  max-width: 100%;
 }
 
 .main-content .content-cell .content .image {
