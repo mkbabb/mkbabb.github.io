@@ -153,7 +153,7 @@ function scrollNavbar(color)
 function scrollInFunctions(init = false)
 {
 
-    let wh = window.innerHeight;
+ 
     let dy = init == true ? -1 : window.pageYOffset + window.innerHeight / 2;
 
     scrollIn(dy, document.getElementById("a20"), scrollOpacity);
@@ -177,27 +177,27 @@ function scrollInFunctions(init = false)
     scrollIn(dy, document.getElementById("a60"), scrollOpacity);
     scrollIn(dy, document.getElementById("a61"), scrollOpacity);
 
-    scrollIn(dy,
-             document.getElementById("area-4"),
-             scrollNavbar("red"),
-             wh / 2,
-             wh / 2);
-    scrollIn(dy,
-             document.getElementById("area-3"),
-             scrollNavbar("green"),
-             wh / 2,
-             wh / 2);
-    scrollIn(dy,
-             document.getElementById("area-2"),
-             scrollNavbar("blue"),
-             wh / 2,
-             wh / 2);
+    // scrollIn(dy,
+    //          document.getElementById("area-4"),
+    //          scrollNavbar("red"),
+    //          wh / 2,
+    //          wh / 2);
+    // scrollIn(dy,
+    //          document.getElementById("area-3"),
+    //          scrollNavbar("green"),
+    //          wh / 2,
+    //          wh / 2);
+    // scrollIn(dy,
+    //          document.getElementById("area-2"),
+    //          scrollNavbar("blue"),
+    //          wh / 2,
+    //          wh / 2);
 
-    scrollIn(dy,
-             document.getElementById("area-1"),
-             scrollNavbar("black"),
-             wh / 2,
-             wh / 2);
+    // scrollIn(dy,
+    //          document.getElementById("area-1"),
+    //          scrollNavbar("black"),
+    //          wh / 2,
+    //          wh / 2);
 }
 
 scrollInFunctions(true);
@@ -228,7 +228,7 @@ document.onkeydown = function(e) {
         document.getElementById("carousel").setAttribute("paused", true);
         let p =
           coords[pos].top + coords[pos].height / 2 - window.innerHeight / 2;
-        smoothScroll(window.scrollY, p, 2000, easeInBounce);
+        smoothScroll(window.scrollY, p, 3000, easeInBounce);
         pos = pos == maxPos ? 0 : pos + 1;
     }
 };

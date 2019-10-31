@@ -642,8 +642,10 @@ function smoothScroll(from, target, duration, timingFunction = smoothStep3)
 
     function draw()
     {
-        let v = Math.floor(
-          timingFunction(clock.elapsedTicks, from, distance, duration));
+        let v =
+          round(timingFunction(clock.elapsedTicks, from, distance, duration),
+                0,
+                0);
         window.scroll(0, v);
         if (v <= 0 || v >= maxHeight) {
             return true;
