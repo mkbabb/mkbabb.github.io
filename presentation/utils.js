@@ -19,7 +19,7 @@ export {
     smoothScroll,
     toggle,
     toggleOnce,
-    transposeCarousel
+    transposeCarousel,
 };
 
 if (!String.prototype.splice) {
@@ -36,14 +36,14 @@ if (!String.prototype.splice) {
      * @param {string} newSubStr The String that is spliced in.
      * @return {string} A new string with the spliced substring.
      */
-    String.prototype.splice = function(start, delCount, newSubStr) {
-        return (this.slice(0, start) + newSubStr +
-                this.slice(start + Math.abs(delCount)));
+    String.prototype.splice = function (start, delCount, newSubStr) {
+        return (
+            this.slice(0, start) + newSubStr + this.slice(start + Math.abs(delCount))
+        );
     };
 }
 
-function initCarousel(carousel)
-{
+function initCarousel(carousel) {
     if (!carousel.getAttribute("cell-height")) {
         let cellStyle = getComputedStyle(carousel.children[0]);
         let cellWidth = parseInt(cellStyle.width.replace("px", "")) + 100;
@@ -57,24 +57,21 @@ function initCarousel(carousel)
     }
 }
 
-function rollCarousel(carousel)
-{
+function rollCarousel(carousel) {
     let cellCount = carousel.children.length;
 
     let index = parseInt(carousel.getAttribute("index"));
     let cellAxis = parseInt(carousel.getAttribute("cell-axis"));
     let axis = carousel.getAttribute("axis");
 
-    let radius =
-      Math.floor((cellAxis / 2) * (1 / Math.tan(Math.PI / cellCount)));
+    let radius = Math.floor((cellAxis / 2) * (1 / Math.tan(Math.PI / cellCount)));
     let alpha = (2 * Math.PI) / cellCount;
 
     for (let i = 0; i < carousel.children.length; i++) {
         let alpha_i = alpha * (index - i);
 
         let child = carousel.children[i];
-        child.style.transform =
-          `rotate${axis}(${alpha_i}rad) translateZ(${radius}px)`;
+        child.style.transform = `rotate${axis}(${alpha_i}rad) translateZ(${radius}px)`;
 
         if (i === index % cellCount) {
             child.setAttribute("id", "main-cell");
@@ -87,8 +84,7 @@ function rollCarousel(carousel)
     carousel.setAttribute("index", `${++index}`);
 }
 
-function transposeCarousel(carousel)
-{
+function transposeCarousel(carousel) {
     let cellCount = carousel.children.length;
     let cellHeight = carousel.getAttribute("cell-height");
     let cellWidth = carousel.getAttribute("cell-width");
@@ -106,16 +102,16 @@ function transposeCarousel(carousel)
     carousel.setAttribute("cell-axis", cellAxis);
     carousel.setAttribute("axis", axis);
 
-    let radius = Math.floor((parseInt(cellAxis) / 2) *
-                            (1 / Math.tan(Math.PI / cellCount)));
+    let radius = Math.floor(
+        (parseInt(cellAxis) / 2) * (1 / Math.tan(Math.PI / cellCount))
+    );
 
     rollCarousel(carousel);
 
-    carousel.style.transform = `translateZ(${- radius}px)`;
+    carousel.style.transform = `translateZ(${-radius}px)`;
 }
 
-async function shuffleCarousel(carousel, shuffleCount)
-{
+async function shuffleCarousel(carousel, shuffleCount) {
     for (let i = 0; i < shuffleCount; i++) {
         transposeCarousel(carousel);
         await sleep(250);
@@ -123,13 +119,11 @@ async function shuffleCarousel(carousel, shuffleCount)
     transposeCarousel(carousel);
 }
 
-function sleep(ms)
-{
+function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function toggle(el, firstCallback, secondCallback)
-{
+function toggle(el, firstCallback, secondCallback) {
     let toggled = el.getAttribute("toggled") === "true";
     if (!toggled) {
         firstCallback(el);
@@ -140,8 +134,7 @@ function toggle(el, firstCallback, secondCallback)
     return;
 }
 
-function toggleOnce(el, firstCallback)
-{
+function toggleOnce(el, firstCallback) {
     let toggled = el.getAttribute("toggled") === "true";
     if (!toggled) {
         firstCallback(el);
@@ -150,8 +143,7 @@ function toggleOnce(el, firstCallback)
     return;
 }
 
-function slideToggle(el)
-{
+function slideToggle(el) {
     let slideHeight;
     if (!el.getAttribute("slide-height")) {
         el.style.height = "100%";
@@ -165,9 +157,10 @@ function slideToggle(el)
     }
 
     if (el.style.height === "0px") {
-        requestAnimationFrame(() => { el.style.height = `${slideHeight}px`; });
+        requestAnimationFrame(() => {
+            el.style.height = `${slideHeight}px`;
+        });
         el.style.overflow = "visible";
-
     } else {
         requestAnimationFrame(() => {
             el.style.height = 0;
@@ -176,12 +169,10 @@ function slideToggle(el)
     }
 }
 
-function DeCasteljau(t, points)
-{
+function DeCasteljau(t, points) {
     let dp = new Map();
 
-    function _DeCasteljau(t, points, ix1, ix2, n)
-    {
+    function _DeCasteljau(t, points, ix1, ix2, n) {
         let k = `${n}${ix1}${ix2}`;
 
         if (dp.has(k)) {
@@ -206,22 +197,16 @@ function DeCasteljau(t, points)
     return _DeCasteljau(t, points, 0, 1, points.length - 1);
 }
 
-function cubicBezier(t, x1, y1, x2, y2)
-{
-    return [
-        DeCasteljau(t, [ 0, x1, x2, 1 ]),
-        DeCasteljau(t, [ 0, y1, y2, 1 ])
-    ];
+function cubicBezier(t, x1, y1, x2, y2) {
+    return [DeCasteljau(t, [0, x1, x2, 1]), DeCasteljau(t, [0, y1, y2, 1])];
 }
 
-function wrap(toWrap, wrapper)
-{
+function wrap(toWrap, wrapper) {
     let wrapped = toWrap.parentNode.insertBefore(wrapper, toWrap);
     return wrapped.appendChild(toWrap);
 }
 
-function affixer(preAffixFunc, postAffixFunc)
-{
+function affixer(preAffixFunc, postAffixFunc) {
     const offsets = [];
 
     document.querySelectorAll(".affix").forEach((el, n) => {
@@ -236,11 +221,12 @@ function affixer(preAffixFunc, postAffixFunc)
         wrap(el, wrapped);
     });
 
-    window.addEventListener("resize", function(e) { scrollAffix(); });
+    window.addEventListener("resize", function (e) {
+        scrollAffix();
+    });
 
     window.addEventListener("scroll", scrollAffix);
-    function scrollAffix()
-    {
+    function scrollAffix() {
         document.querySelectorAll(".affix").forEach((el, n) => {
             let affixY = offsets[n].top;
 
@@ -250,7 +236,6 @@ function affixer(preAffixFunc, postAffixFunc)
                 el.style.position = "fixed";
                 el.style.top = `${0}px`;
                 el.style.width = `${window.innerWidth - 2 * offsets[n].left}px`;
-
             } else {
                 postAffixFunc(el, n);
                 el.style.top = `${0}px`;
@@ -261,15 +246,16 @@ function affixer(preAffixFunc, postAffixFunc)
     }
 }
 
-function distributeCards(origin,
-                         cards,
-                         delay,
-                         sx,
-                         sy,
-                         columns,
-                         deal = false,
-                         spacing = "auto")
-{
+function distributeCards(
+    origin,
+    cards,
+    delay,
+    sx,
+    sy,
+    columns,
+    deal = false,
+    spacing = "auto"
+) {
     let maxWidth = 0;
     let maxHeight = 0;
 
@@ -284,7 +270,7 @@ function distributeCards(origin,
 
     let dx = maxWidth + sx;
     let dy = maxHeight + sy;
-    let x0 = -dx * (columns - 1) / 2 + ds;
+    let x0 = (-dx * (columns - 1)) / 2 + ds;
     let y0 = originOffset.height + sy;
 
     let x = x0;
@@ -317,92 +303,74 @@ function distributeCards(origin,
     });
 }
 
-function debounce(func, wait, immediate)
-{
+function debounce(func, wait, immediate) {
     var timeout;
-    return function() {
+    return function () {
         var context = this;
         var args = arguments;
-        var later = function() {
+        var later = function () {
             timeout = null;
-            if (!immediate)
-                func.apply(context, args);
+            if (!immediate) func.apply(context, args);
         };
         var callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
-        if (callNow)
-            func.apply(context, args);
+        if (callNow) func.apply(context, args);
     };
 }
 
-function easeInBounce(t, b, c, d)
-{
+function easeInBounce(t, b, c, d) {
     t = cubicBezier(t / d, 0.09, 0.91, 0.5, 1.5)[1];
     return c * t + b;
 }
 
-function bounceInEase(t, b, c, d)
-{
+function bounceInEase(t, b, c, d) {
     t = cubicBezier(t / d, 0.19, -0.53, 0.83, 0.67)[1];
     return c * t + b;
 }
 
-function easeInQuad(t, b, c, d)
-{
+function easeInQuad(t, b, c, d) {
     return c * (t /= d) * t + b;
 }
 
-function easeOutQuad(t, b, c, d)
-{
+function easeOutQuad(t, b, c, d) {
     return -c * (t /= d) * (t - 2) + b;
 }
 
-function easeInOutQuad(t, b, c, d)
-{
-    if ((t /= d / 2) < 1)
-
-        return (c / 2) * t * t + b;
+function easeInOutQuad(t, b, c, d) {
+    if ((t /= d / 2) < 1) return (c / 2) * t * t + b;
     return (-c / 2) * (--t * (t - 2) - 1) + b;
 }
 
-function easeInCubic(t, b, c, d)
-{
+function easeInCubic(t, b, c, d) {
     return c * (t /= d) * t * t + b;
 }
 
-function easeOutCubic(t, b, c, d)
-{
+function easeOutCubic(t, b, c, d) {
     return c * ((t = t / d - 1) * t * t + 1) + b;
 }
 
-function easeInOutCubic(t, b, c, d)
-{
-    if ((t /= d / 2) < 1)
-        return (c / 2) * t * t * t + b;
+function easeInOutCubic(t, b, c, d) {
+    if ((t /= d / 2) < 1) return (c / 2) * t * t * t + b;
     return (c / 2) * ((t -= 2) * t * t + 2) + b;
 }
 
-function smoothStep3(t, b, c, d)
-{
+function smoothStep3(t, b, c, d) {
     t /= d;
     return c * Math.pow(t, 2) * (3 - 2 * t) + b;
 }
 
-function lerp(v0, v1, t)
-{
+function lerp(v0, v1, t) {
     return (1 - t) * v0 + t * v1;
 }
 
-function logerp(v0, v1, t)
-{
+function logerp(v0, v1, t) {
     v0 = v0 === 0 ? 1e-9 : v0;
     let tt = v0 * Math.pow(v1 / v0, t);
     return tt;
 }
 
-function clamp(x, lowerLimit, upperLimit)
-{
+function clamp(x, lowerLimit, upperLimit) {
     if (x < lowerLimit) {
         return lowerLimit;
     } else if (x > upperLimit) {
@@ -411,8 +379,7 @@ function clamp(x, lowerLimit, upperLimit)
     return x;
 }
 
-function toBase(num, base)
-{
+function toBase(num, base) {
     let digits = [];
     while (num !== 0) {
         num = (num / base) >> 0;
@@ -420,33 +387,33 @@ function toBase(num, base)
     }
     if (base === 10) {
         let based = 0;
-        digits.forEach(
-          (value, index) => { based += value * Math.pow(10, index); });
+        digits.forEach((value, index) => {
+            based += value * Math.pow(10, index);
+        });
         return based;
     } else {
         let based = "";
-        digits.reverse().forEach((value, index) => { based += value; });
+        digits.reverse().forEach((value, index) => {
+            based += value;
+        });
         return based;
     }
 }
 
-function hexToRGB(num, alpha = 1)
-{
+function hexToRGB(num, alpha = 1) {
     let rgbInt = parseInt(num, 16);
     let r = (rgbInt >> 16) & 255;
     let g = (rgbInt >> 8) & 255;
     let b = rgbInt & 255;
-    return [ r, g, b, alpha ];
+    return [r, g, b, alpha];
 }
 
-function RGBAToHex(num)
-{
+function RGBAToHex(num) {
     let [r, g, b, a] = num;
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
-function colorToRGBA(color)
-{
+function colorToRGBA(color) {
     let canvas = document.createElement("canvas");
     canvas.height = 1;
     canvas.width = 1;
@@ -456,8 +423,7 @@ function colorToRGBA(color)
     return Array.from(ctx.getImageData(0, 0, 1, 1).data);
 }
 
-function parseColor(color)
-{
+function parseColor(color) {
     let pcolor;
     if (typeof color === "string") {
         if (color[0] === "#") {
@@ -506,10 +472,11 @@ function parseColor(color)
     return pcolor;
 }
 
-function interpColor(colors, steps = 2, endPoints = true, interpFunc = lerp)
-{
+function interpColor(colors, steps = 2, endPoints = true, interpFunc = lerp) {
     let palettes = new Array((colors.length - 1) * steps).fill(0);
-    colors.forEach((value, index) => { colors[index] = parseColor(value); });
+    colors.forEach((value, index) => {
+        colors[index] = parseColor(value);
+    });
     let i = 0;
     for (let [n, color] of colors.entries()) {
         if (n < colors.length - 1) {
@@ -517,8 +484,7 @@ function interpColor(colors, steps = 2, endPoints = true, interpFunc = lerp)
             let [r2, g2, b2, a2] = colors[n + 1];
 
             for (let m = endPoints & (n === 0) ? 0 : 1; m <= steps; m++) {
-                if (m === steps && n === colors.length - 2 && !endPoints)
-                    break;
+                if (m === steps && n === colors.length - 2 && !endPoints) break;
                 let t = m / steps;
                 let ri = Math.ceil(interpFunc(r1, r2, t));
                 let gi = Math.ceil(interpFunc(g1, g2, t));
@@ -536,8 +502,7 @@ function interpColor(colors, steps = 2, endPoints = true, interpFunc = lerp)
     return palettes;
 }
 
-function averageColorDelta(colors)
-{
+function averageColorDelta(colors) {
     let len = colors.length;
     let r_avg = 0;
     let g_avg = 0;
@@ -545,9 +510,9 @@ function averageColorDelta(colors)
     let a_avg = 0;
 
     for (let [i, j] of colors) {
-        let [rd, gd, bd, ad] = operateColor(parseColor(i),
-                                            parseColor(j),
-                                            (x, y) => { return y - x; });
+        let [rd, gd, bd, ad] = operateColor(parseColor(i), parseColor(j), (x, y) => {
+            return y - x;
+        });
         r_avg += rd;
         g_avg += gd;
         b_avg += bd;
@@ -557,14 +522,19 @@ function averageColorDelta(colors)
     g_avg = ~~(g_avg / len);
     b_avg = ~~(b_avg / len);
     a_avg = ~~(a_avg / len);
-    return [ r_avg, g_avg, b_avg, 0 ];
+    return [r_avg, g_avg, b_avg, 0];
 }
 
-function operateColor(c1, c2, op = (x, y) => { return x + y; })
-{
+function operateColor(
+    c1,
+    c2,
+    op = (x, y) => {
+        return x + y;
+    }
+) {
     color1 = parseColor(c1);
     color2 = parseColor(c2);
-    color3 = [ 0, 0, 0, 0 ];
+    color3 = [0, 0, 0, 0];
 
     for (let i = 0; i < color1.length; i++) {
         color3[i] = op(color1[i], color2[i]);
@@ -572,45 +542,47 @@ function operateColor(c1, c2, op = (x, y) => { return x + y; })
     return color3;
 }
 
-function colorDeltaFromData(color, data)
-{
+function colorDeltaFromData(color, data) {
     avg = averageColorDelta(data);
     altColor = operateColor(avg, color);
     return altColor;
 }
 
-function RGBAToString(color)
-{
+function RGBAToString(color) {
     return ` rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]}) `;
 }
 
-class Clock
-{
-    constructor(autoStart = true, timeStep = 1000 / 60)
-    {
+class Clock {
+    constructor(autoStart = true, timeStep = 1000 / 60) {
         this.autoStart = autoStart;
         this.timeStep = Math.floor(timeStep);
     }
-    start()
-    {
-        this.startTime =
-          (typeof performance === "undefined" ? Date : performance).now();
+    start() {
+        this.startTime = (typeof performance === "undefined"
+            ? Date
+            : performance
+        ).now();
         this.prevTime = this.startTime;
         this.elapsedTime = 0;
         this.elapsedTicks = 0;
         this.running = true;
         this.delta = 0;
     }
-    stop() { this.running = false; }
-    reset() { this.start(); }
-    tick()
-    {
+    stop() {
+        this.running = false;
+    }
+    reset() {
+        this.start();
+    }
+    tick() {
         this.delta = 0;
         if (this.autoStart && !this.running) {
             this.start();
         } else if (this.running) {
-            let currentTime =
-              (typeof performance === "undefined" ? Date : performance).now();
+            let currentTime = (typeof performance === "undefined"
+                ? Date
+                : performance
+            ).now();
             this.delta = currentTime - this.prevTime;
             this.prevTime = currentTime;
             this.elapsedTime += this.delta;
@@ -620,8 +592,7 @@ class Clock
     }
 }
 
-function smoothScroll(from, target, duration, timingFunction = smoothStep3)
-{
+function smoothScroll(from, target, duration, timingFunction = smoothStep3) {
     duration = Math.ceil(duration);
 
     if (duration <= 0) {
@@ -640,12 +611,12 @@ function smoothScroll(from, target, duration, timingFunction = smoothStep3)
 
     function update() {}
 
-    function draw()
-    {
-        let v =
-          round(timingFunction(clock.elapsedTicks, from, distance, duration),
-                0,
-                0);
+    function draw() {
+        let v = round(
+            timingFunction(clock.elapsedTicks, from, distance, duration),
+            0,
+            0
+        );
         window.scroll(0, v);
         if (v <= 0 || v >= maxHeight) {
             return true;
@@ -653,8 +624,7 @@ function smoothScroll(from, target, duration, timingFunction = smoothStep3)
         return false;
     }
 
-    function animationLoop()
-    {
+    function animationLoop() {
         clock.tick();
 
         let delta = clock.delta;
@@ -681,19 +651,17 @@ function smoothScroll(from, target, duration, timingFunction = smoothStep3)
     requestAnimationFrame(animationLoop);
 }
 
-function getOffset(el)
-{
+function getOffset(el) {
     const rect = el.getBoundingClientRect();
     return {
-        left : rect.left + window.scrollX,
-        top : rect.top + window.scrollY,
-        width : rect.width,
-        height : rect.height
+        left: rect.left + window.scrollX,
+        top: rect.top + window.scrollY,
+        width: rect.width,
+        height: rect.height,
     };
 }
 
-function round(n, d, mode = 0)
-{
+function round(n, d, mode = 0) {
     let ten = Math.pow(10, d);
     let v = 0;
     if (mode === 0) {
@@ -706,10 +674,13 @@ function round(n, d, mode = 0)
     return v / ten;
 }
 
-function scrollInPreamble(elementNode, offsetMin, offsetMax, force = false)
-{
-    if ((!elementNode.hasAttribute("scroll-in-min") && !force) &&
-        (!elementNode.getAttribute("scroll-in-max") && !force)) {
+function scrollInPreamble(elementNode, offsetMin, offsetMax, force = false) {
+    if (
+        !elementNode.hasAttribute("scroll-in-min") &&
+        !force &&
+        !elementNode.getAttribute("scroll-in-max") &&
+        !force
+    ) {
         let elementOffset = getOffset(elementNode);
         let min = elementOffset.top + offsetMin;
         let max = elementOffset.top + elementOffset.height / 2 + offsetMax;
@@ -720,17 +691,19 @@ function scrollInPreamble(elementNode, offsetMin, offsetMax, force = false)
     return false;
 }
 
-function scrollIn(dy,
-                  elementNode,
-                  scrollFunc,
-                  offsetMin = 0,
-                  offsetMax = 0,
-                  limitingNode = null)
-{
+function scrollIn(
+    dy,
+    elementNode,
+    scrollFunc,
+    offsetMin = 0,
+    offsetMax = 0,
+    limitingNode = null
+) {
     if (dy == -1) {
         scrollInPreamble(elementNode, offsetMin, offsetMax);
-        requestAnimationFrame(
-          function() { scrollFunc(elementNode, 0, dy, 0, 100000); });
+        requestAnimationFrame(function () {
+            scrollFunc(elementNode, 0, dy, 0, 100000);
+        });
 
         return false;
     }
@@ -739,8 +712,7 @@ function scrollIn(dy,
     let max = parseFloat(elementNode.getAttribute("scroll-in-max"));
 
     let limitingOffset = getOffset(limitingNode || document.body);
-    let tMax =
-      limitingOffset.top + limitingOffset.height - window.innerHeight / 2;
+    let tMax = limitingOffset.top + limitingOffset.height - window.innerHeight / 2;
 
     if (max >= tMax) {
         let delta = max - tMax;
@@ -749,21 +721,21 @@ function scrollIn(dy,
     }
 
     if (dy <= min) {
-        requestAnimationFrame(
-          function() { scrollFunc(elementNode, 0, dy, min, max); });
+        requestAnimationFrame(function () {
+            scrollFunc(elementNode, 0, dy, min, max);
+        });
         return true;
     } else {
+        let v = dy >= min ? (clamp(dy, min, max) - min) / (max - min) : 0;
 
-        let v = (dy >= min) ? (clamp(dy, min, max) - min) / (max - min) : 0;
-
-        requestAnimationFrame(
-          function() { scrollFunc(elementNode, v, dy, min, max); });
+        requestAnimationFrame(function () {
+            scrollFunc(elementNode, v, dy, min, max);
+        });
         return false;
     }
 }
 
-function listElementsCoords(elements)
-{
+function listElementsCoords(elements) {
     let coords = [];
     for (let i of elements) {
         coords.push(getOffset(i));
