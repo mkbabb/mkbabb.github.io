@@ -499,8 +499,7 @@ li:hover {
         top: 0;
         opacity: 0;
 
-        transition: transform cubic-bezier(0.09, 0.91, 0.5, 1.1) 700ms,
-            opacity 1s;
+        transition: transform cubic-bezier(0.09, 0.91, 0.5, 1.1) 700ms, opacity 1s;
         z-index: 1;
     }
 }

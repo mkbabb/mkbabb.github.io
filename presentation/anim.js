@@ -1,6 +1,6 @@
-import {Color, Renderer, Transform, Vec3} from "./src/Core.js";
-import {Polyline} from "./src/Extras.js";
-import {interpColor, lerp as lerper} from "./utils.js";
+import { Color, Renderer, Transform, Vec3 } from "./src/Core.js";
+import { Polyline } from "./src/Extras.js";
+import { interpColor, lerp as lerper } from "./utils.js";
 
 const vertex = `
             precision highp float;
@@ -49,7 +49,7 @@ const vertex = `
             }
         `;
 
-const renderer = new Renderer({dpr : 2});
+const renderer = new Renderer({ dpr: 2 });
 const gl = renderer.gl;
 document.getElementById("background").appendChild(gl.canvas);
 gl.clearColor(1, 1, 1, 1);
@@ -58,8 +58,7 @@ const scene = new Transform();
 
 const lines = [];
 
-function resize()
-{
+function resize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     // We call resize on the polylines to update their resolution uniforms
@@ -68,8 +67,7 @@ function resize()
 window.addEventListener("resize", resize, false);
 
 // Just a helper function to make the code neater
-function random(a, b)
-{
+function random(a, b) {
     const alpha = Math.random();
     return a * (1.0 - alpha) + b * alpha;
 }
@@ -85,13 +83,13 @@ function random(a, b)
 // give the line some width.
 
 // We're going to make a number of different coloured lines for fun.
-interpColor([ "#c00", "white" ], 5, false, lerper).forEach((color, i) => {
+interpColor(["#c00", "white"], 5, false, lerper).forEach((color, i) => {
     // Store a few values for each lines' spring movement
     const line = {
-        spring : random(0.02, 0.1),
-        friction : random(0.7, 0.95),
-        mouseVelocity : new Vec3(),
-        mouseOffset : new Vec3(random(-1, 1) * 0.02)
+        spring: random(0.02, 0.1),
+        friction: random(0.7, 0.95),
+        mouseVelocity: new Vec3(),
+        mouseOffset: new Vec3(random(-1, 1) * 0.02),
     };
 
     // Create an array of Vec3s (eg [[0, 0, 0], ...])
@@ -99,18 +97,17 @@ interpColor([ "#c00", "white" ], 5, false, lerper).forEach((color, i) => {
     // handle the doubling of vertices for the polyline effect.
     const count = 20;
     const points = (line.points = []);
-    for (let i = 0; i < count; i++)
-        points.push(new Vec3());
+    for (let i = 0; i < count; i++) points.push(new Vec3());
 
     // Pass in the points, and any custom elements - for example here
     // we've made custom shaders, and accompanying uniforms.
     line.polyline = new Polyline(gl, {
         points,
         vertex,
-        uniforms : {
-            uColor : {value : new Color(color)},
-            uThickness : {value : random(20, 50)}
-        }
+        uniforms: {
+            uColor: { value: new Color(color) },
+            uThickness: { value: random(20, 50) },
+        },
     });
 
     line.polyline.mesh.setParent(scene);
@@ -130,8 +127,7 @@ if ("ontouchstart" in window) {
     window.addEventListener("mousemove", updateMouse, false);
 }
 
-function updateMouse(e)
-{
+function updateMouse(e) {
     if (e.changedTouches && e.changedTouches.length) {
         e.x = e.changedTouches[0].pageX;
         e.y = e.changedTouches[0].pageY;
@@ -142,16 +138,17 @@ function updateMouse(e)
     }
 
     // Get mouse value in -1 to 1 range, with y flipped
-    mouse.set((e.x / gl.renderer.width) * 2 - 1,
-              (e.y / gl.renderer.height) * -2 + 1,
-              0);
+    mouse.set(
+        (e.x / gl.renderer.width) * 2 - 1,
+        (e.y / gl.renderer.height) * -2 + 1,
+        0
+    );
 }
 
 const tmp = new Vec3();
 
 requestAnimationFrame(update);
-function update(t)
-{
+function update(t) {
     requestAnimationFrame(update);
 
     lines.forEach((line) => {
@@ -160,9 +157,9 @@ function update(t)
             if (!i) {
                 // For the first point, spring ease it to the mouse position
                 tmp.copy(mouse)
-                  .add(line.mouseOffset)
-                  .sub(line.points[i])
-                  .multiply(line.spring);
+                    .add(line.mouseOffset)
+                    .sub(line.points[i])
+                    .multiply(line.spring);
                 line.mouseVelocity.add(tmp).multiply(line.friction);
                 line.points[i].add(line.mouseVelocity);
             } else {
@@ -174,5 +171,5 @@ function update(t)
         line.polyline.updateGeometry();
     });
 
-    renderer.render({scene});
+    renderer.render({ scene });
 }
